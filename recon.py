@@ -1,8 +1,9 @@
 import subprocess
 import os
 
-if os.path.exists('nmap'):
-    print('exists')
+path = '/usr/bin/nmap'
+if os.path.exists(path):
+    print('Nmap exists')
 else:
     print('nope')
 
