@@ -3,6 +3,8 @@ import os
 
 if os.path.exists('nmap'):
     print('exists')
+else:
+    print('nope')
 
 nmap_command = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
 gospider_command = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
