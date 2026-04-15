@@ -1,13 +1,18 @@
 import subprocess
 import os
+import shutil
 
 def check_for_tools_linux():
-    path = '/usr/bin/'
-    if os.path.exists(path + 'nmap'):
-        print('Nmap exists')
-    else:
-        print('nope')
+    tools = ['nmap', 'gospider', 'gobuster']
 
+    for tool in tools:
+        if shutil.which(tool):
+            print(f"{tool} exists")
+        else:
+            print(f"{tool} missing")
+
+
+"""
     if os.path.exists(path + 'gospider'):
         print('Gospider exists')
     else:
@@ -17,9 +22,10 @@ def check_for_tools_linux():
         print('Gobuster exists')
     else:
         print('nope')
+"""
 
 nmap_command = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
-gospider_command = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
+#gospider_command = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
 gobuster_command = subprocess.run(['gobuster', '-h'], capture_output=True, text=True)
 
 #print(nmap_command.stdout)
