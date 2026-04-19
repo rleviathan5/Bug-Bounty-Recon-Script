@@ -27,8 +27,8 @@ def display_tool_help_menu(help_menu_input):
         gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
         gobuster_h = subprocess.run(['gobuster', '-h'], capture_output=True, text=True)
 
-        print(nmap_h.stdout)
-        print(gospider_h.stdout)
+        print(nmap_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n") #seperating the help menus
+        print(gospider_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
         print(gobuster_h.stdout)
     elif help_menu_input == "n" or help_menu_input == "N":
         return
