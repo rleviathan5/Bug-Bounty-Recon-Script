@@ -33,14 +33,14 @@ def display_tool_help_menu(help_menu_input):
     elif help_menu_input == "n" or help_menu_input == "N":
         return
     else:
-        help_menu_input_retry = input("Display Tool Help Menus? (y/n)")
+        help_menu_input_retry = input("Display Tool Help Menus? (y/n): ")
         display_tool_help_menu(help_menu_input_retry)
 
 #main body
 check_for_tools()
 
 print("Simple Bug Bounty Hunting Recon Tool\n\n")
-help_menu_input = input("Display Tool Help Menus? (y/n)")
+help_menu_input = input("Display Tool Help Menus? (y/n): ")
 display_tool_help_menu(help_menu_input)
 
 ipv4_input = input("\n\n\nEnter Ipv4 address to scan: ")
