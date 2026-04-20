@@ -12,8 +12,8 @@ def check_for_tools():
         else:
             results.append(f"{tool} missing")
 
-    print(" | ".join(results))
-    
+    print(" | ".join(results)) #seperating print statements with a pipe symbol
+
 def check_valid_ipv4(ipv4_input):
     ipv4_pattern = r'(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}' ## https://ihateregex.io/expr/ip/
     match = re.search(ipv4_pattern, ipv4_input)
@@ -40,7 +40,15 @@ def display_tool_help_menu(help_menu_input):
         display_tool_help_menu(help_menu_input_retry)
 
 def display_script_help_menu():
-    print()
+    print("\nThis simple Bug Bounty Hunting script uses nmap, gospider and gobuster")
+    print("https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster")
+    print("\nFLAGS:")
+    print("\t--help: Display help menu for recon.py script")
+    print("\t--tools: Display help menus for packaged recon tools")
+    print("\t--ipv4 {Valid Ipv4 Address}: Specify a target for all recon tools")
+
+    print("RECON TOOL DEFAULT FLAGS")
+    
     
 
 
@@ -52,11 +60,11 @@ check_for_tools()
 
 print("\nSimple Bug Bounty Hunting Recon Tool")
 print("Type --help for more information")
-user_input = input()
+#user_input = input()
 
-
-ipv4_input = input("\n\n\nEnter Ipv4 address to scan: ")
-check_valid_ipv4(ipv4_input)
+display_script_help_menu()
+#ipv4_input = input("\n\n\nEnter Ipv4 address to scan: ")
+#check_valid_ipv4(ipv4_input)
 
 
 
