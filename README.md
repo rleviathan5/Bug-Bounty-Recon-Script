@@ -9,4 +9,7 @@ Run docker run --rm -p 3000:3000 bkimminich/juice-shop<br>
 Browse to http://localhost:3000 (on macOS and Windows browse to http://192.168.99.100:3000 if you are using docker-machine instead of the native docker installation)<br>
 
 For running the test flag, build your docker image with this command: <br>
-sudo docker run -it --add-host host.docker.internal:host-gateway {your-image-name}
+sudo docker run -it --add-host host.docker.internal:host-gateway {your-image-name}<br>
+
+
+Thinking of removing nmap for a wappalyzer-cli since that is more reliable at detecting a webserver
