@@ -40,10 +40,13 @@ def display_tool_help_menu(help_menu_input):
         help_menu_input_retry = input("Display Tool Help Menus? (y/n): ")
         display_tool_help_menu(help_menu_input_retry)
 
-def test_flag():
+def test_flag_gobuster():
+    return subprocess.run(
+        ['gobuster', 'dir', '-u', 'http://host.docker.internal:3000', 
+         '-w', 'common.txt', '-t', '5', '--exclude-length', '75002'], 
+         capture_output=True, 
+         text=True)
     
-    gobuster_test = subprocess.run(['gobuster', 'dir', '-u', 'http://localhost:3000', '-w', '/usr/share/seclists/Discovery/Web-Content/common.txt', '-t', '5', '--exclude-length', '75002'], capture_output=True, text=True)
-    #print(gobuster_test.stdout)
 
 def display_script_help_menu():
     print("\nThis simple Bug Bounty Hunting script uses nmap, gospider and gobuster")
@@ -51,7 +54,7 @@ def display_script_help_menu():
     print("\nFLAGS:")
     print("\t--help: Display help menu for recon.py script")
     print("\t--tools: Display help menus for packaged recon tools")
-    print("\t--test: Test recon tools against local OWASP Juice Shop(see README)")
+    print("\t--test: Test recon tools against local OWASP Juice Shop - ONLY WORKS IN DOCKER (see README)")
     print("\t--domain {Valid Domain}: Specify a target for all recon tools")
     print("\nRECON TOOL DEFAULT FLAGS")
     print("")
@@ -60,23 +63,21 @@ def display_script_help_menu():
 #gobuster dir -u http://localhost:3000 -w /usr/share/seclists/Discovery/Web-Content/common.txt -t 5 --exclude-length 75002
 
 
-
-
 #main body
 check_for_tools()
 
 print("\nSimple Bug Bounty Hunting Recon Tool")
 print("Type --help for more information")
 #user_input = input()
-subprocess.run(['gobuster', 'dir', '-u', 'http://localhost:3000', '-w', 'common.txt', '-t', '5', '--exclude-length', '75002'])
-
-"""
-#testing multithreading
+print("\nThreads starting")
 with ThreadPoolExecutor(max_workers=1) as executor:
-    executor.submit(test_flag)
+    gobuster_thread = executor.submit(test_flag_gobuster)
     print("Crawling...")
-"""
+    gobuster_result = gobuster_thread.result() #blocks until completion
 
+print("Threads finished")
+print(gobuster_result.stdout)
+print(gobuster_result.stderr)
 
 
 
