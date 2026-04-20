@@ -4,13 +4,16 @@ import re
 
 def check_for_tools():
     tools = ['nmap', 'gospider', 'gobuster']
+    results = []
 
     for tool in tools:
         if shutil.which(tool):
-            print(f"{tool} exists")
+            results.append(f"{tool} exists")
         else:
-            print(f"{tool} missing")
+            results.append(f"{tool} missing")
 
+    print(" | ".join(results))
+    
 def check_valid_ipv4(ipv4_input):
     ipv4_pattern = r'(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}' ## https://ihateregex.io/expr/ip/
     match = re.search(ipv4_pattern, ipv4_input)
@@ -36,12 +39,21 @@ def display_tool_help_menu(help_menu_input):
         help_menu_input_retry = input("Display Tool Help Menus? (y/n): ")
         display_tool_help_menu(help_menu_input_retry)
 
+def display_script_help_menu():
+    print()
+    
+
+
+
+
+
 #main body
 check_for_tools()
 
-print("Simple Bug Bounty Hunting Recon Tool\n\n")
-help_menu_input = input("Display Tool Help Menus? (y/n): ")
-display_tool_help_menu(help_menu_input)
+print("\nSimple Bug Bounty Hunting Recon Tool")
+print("Type --help for more information")
+user_input = input()
+
 
 ipv4_input = input("\n\n\nEnter Ipv4 address to scan: ")
 check_valid_ipv4(ipv4_input)
