@@ -45,9 +45,9 @@ def display_script_help_menu():
     print("\nFLAGS:")
     print("\t--help: Display help menu for recon.py script")
     print("\t--tools: Display help menus for packaged recon tools")
-    print("\t--ipv4 {Valid Ipv4 Address}: Specify a target for all recon tools")
-
-    print("RECON TOOL DEFAULT FLAGS")
+    print("\t--domain {Valid Domain}: Specify a target for all recon tools")
+    print("\nRECON TOOL DEFAULT FLAGS")
+    print("")
     
     
 
