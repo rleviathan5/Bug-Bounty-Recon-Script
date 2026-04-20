@@ -14,5 +14,6 @@ gobuster \
 COPY --from=builder /usr/local/bin/gospider /usr/bin/gospider
 WORKDIR /home/abertay/Bug-Bounty-Recon-Script
 COPY recon.py .
+COPY common.txt .
 
 CMD ["python", "-u", "recon.py"]

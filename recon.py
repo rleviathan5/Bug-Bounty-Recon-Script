@@ -43,7 +43,7 @@ def display_tool_help_menu(help_menu_input):
 def test_flag():
     
     gobuster_test = subprocess.run(['gobuster', 'dir', '-u', 'http://localhost:3000', '-w', '/usr/share/seclists/Discovery/Web-Content/common.txt', '-t', '5', '--exclude-length', '75002'], capture_output=True, text=True)
-    print(gobuster_test.stdout)
+    #print(gobuster_test.stdout)
 
 def display_script_help_menu():
     print("\nThis simple Bug Bounty Hunting script uses nmap, gospider and gobuster")
@@ -68,12 +68,14 @@ check_for_tools()
 print("\nSimple Bug Bounty Hunting Recon Tool")
 print("Type --help for more information")
 #user_input = input()
+subprocess.run(['gobuster', 'dir', '-u', 'http://localhost:3000', '-w', 'common.txt', '-t', '5', '--exclude-length', '75002'])
 
+"""
 #testing multithreading
 with ThreadPoolExecutor(max_workers=1) as executor:
     executor.submit(test_flag)
     print("Crawling...")
-
+"""
 
 
 
