@@ -1,6 +1,7 @@
 import subprocess
 import shutil
 import re
+from concurrent.futures import ThreadPoolExecutor
 
 def check_for_tools():
     tools = ['nmap', 'gospider', 'gobuster']
@@ -39,18 +40,24 @@ def display_tool_help_menu(help_menu_input):
         help_menu_input_retry = input("Display Tool Help Menus? (y/n): ")
         display_tool_help_menu(help_menu_input_retry)
 
+def test_flag():
+    
+    gobuster_test = subprocess.run(['gobuster', 'dir', '-u', 'http://localhost:3000', '-w', '/usr/share/seclists/Discovery/Web-Content/common.txt', '-t', '5', '--exclude-length', '75002'], capture_output=True, text=True)
+    print(gobuster_test.stdout)
+
 def display_script_help_menu():
     print("\nThis simple Bug Bounty Hunting script uses nmap, gospider and gobuster")
     print("https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster")
     print("\nFLAGS:")
     print("\t--help: Display help menu for recon.py script")
     print("\t--tools: Display help menus for packaged recon tools")
+    print("\t--test: Test recon tools against local OWASP Juice Shop(see README)")
     print("\t--domain {Valid Domain}: Specify a target for all recon tools")
     print("\nRECON TOOL DEFAULT FLAGS")
     print("")
     
     
-
+#gobuster dir -u http://localhost:3000 -w /usr/share/seclists/Discovery/Web-Content/common.txt -t 5 --exclude-length 75002
 
 
 
@@ -62,9 +69,12 @@ print("\nSimple Bug Bounty Hunting Recon Tool")
 print("Type --help for more information")
 #user_input = input()
 
-display_script_help_menu()
-#ipv4_input = input("\n\n\nEnter Ipv4 address to scan: ")
-#check_valid_ipv4(ipv4_input)
+#testing multithreading
+with ThreadPoolExecutor(max_workers=1) as executor:
+    executor.submit(test_flag)
+    print("Crawling...")
+
+
 
 
 
