@@ -1,7 +1,7 @@
 import subprocess
 import shutil
 import re
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, wait
 
 def check_for_tools():
     tools = ['nmap', 'gospider', 'gobuster']
@@ -43,8 +43,8 @@ def display_tool_help_menu(help_menu_input):
 def test_flag_gospider():
     return subprocess.run(
         ['gospider', '-s', 'http://juice-shop.localhost:3000', 
-         '-d', '1', '-c', '2', '-t', '4', '--delay', '1', '--verbose'], 
-         #capture_output=True, 
+         '-d', '1', '-c', '2', '-t', '5'], 
+         capture_output=True, 
          text=True)
     
 def test_flag_gobuster():
@@ -78,21 +78,25 @@ user_input = input()
 
 print("\nThreads starting")
 
-with ThreadPoolExecutor(max_workers=1) as executor:  
-    #gobuster_thread = executor.submit(test_flag_gobuster)
-    gospider_thread = executor.submit(test_flag_gospider)
+with ThreadPoolExecutor(max_workers=2) as executor:  
+    threads = [
+        executor.submit(test_flag_gospider),
+        executor.submit(test_flag_gobuster)
+        ]
+    
     print("Crawling...")
-    #gobuster_result = gobuster_thread.result() #blocks until completion
-    gospider_result = gospider_thread.result()
+    wait(threads) #block until all threads are done
+    
+    gospider_result = threads[0].result() #result is needed threads array is a future object
+    gobuster_result = threads[1].result()
 
 print("Threads finished")
-#print(gobuster_result.stdout)
-#print(gobuster_result.stderr)
-#print(gospider_result.stdout)
-#print(gospider_result.stderr)
+print(gobuster_result.stdout)
+print(gobuster_result.stderr)
+print(gospider_result.stdout)
+print(gospider_result.stderr)
 
-#gospider is slow because its making extra hops outside of its onw container to reach the juice shop container
-#need to research docker networks
+
 
 
 
