@@ -8,17 +8,17 @@ services:
       - recon
     stdin_open: true                  #equivalent to docker run -i
     tty: true                         #equivalent to docker run -t
-  
+
   juice-shop:
     image: bkimminich/juice-shop
     container_name: juice-shop
     ports:
       - "3000:3000"                   #expose localhost:3000
     networks:
-      - recon
-    logging:              
-      driver: "none"                  #ignore terminal stdout for juice-shop
+      recon:
+        aliases:
+        - juice-shop.localhost        #gospider has some strict domain parsing rules!!
 
 networks:
-      recon-net:
+      recon:
         driver: bridge
