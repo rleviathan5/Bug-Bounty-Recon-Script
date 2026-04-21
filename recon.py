@@ -44,16 +44,25 @@ def test_flag_gospider():
     pattern = r".*\.(png|jpg|jpeg|gif|svg|ico|css|woff|woff2|ttf|map)$" #unorthodox flags are to stop massive asset explosion due to juice-shop being a single page app
     return subprocess.run(                                              #im talking like 250k+ output lines my poor kali kept blowing up
         ['gospider', '-s', 'http://juice-shop.local:3000', 
-         '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', '--blacklist', pattern, '--output', 'gospider_output'], 
+         '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', 
+         '--blacklist', pattern, '--output', 'gospider_output']
          capture_output=True, 
          text=True)
     
 def test_flag_gobuster():
     return subprocess.run(
         ['gobuster', 'dir', '-u', 'http://juice-shop.local:3000', 
-         '-w', 'common.txt', '-t', '5', '--exclude-length', '75002', '-o', 'gobuster.txt'], 
+         '-w', 'common.txt', '-t', '5', '--exclude-length', '75002', '-o', 'gobuster.txt']
          capture_output=True, 
          text=True)
+
+def test_flag_nmap():
+    return subprocess.run(
+        ['nmap', '-sV', '-p', '3000', '-oN', 'nmap.txt', 'juice-shop.local'],
+        capture_output=True,
+        text=True
+    )
+    
 
 def display_script_help_menu():
     print("\nThis simple Bug Bounty Hunting script uses nmap, gospider and gobuster")
@@ -65,37 +74,26 @@ def display_script_help_menu():
     print("\t--domain {Valid Domain}: Specify a target for all recon tools")
     print("\nRECON TOOL DEFAULT FLAGS")
     
-    
-#gobuster dir -u http://localhost:3000 -w /usr/share/seclists/Discovery/Web-Content/common.txt -t 5 --exclude-length 75002
-#gospider -s http://127.0.0.1:3000 -d 1 -c 2 -t 2 --delay 2
-
 
 #main body
 check_for_tools()
 
 print("\nSimple Bug Bounty Hunting Recon Tool")
 print("Type --help for more information")
-user_input = input()
+user_input = input() #temporary hand while juice-shop starts
 
 print("\nThreads starting")
-
 with ThreadPoolExecutor(max_workers=2) as executor:  
     threads = [
         executor.submit(test_flag_gospider),
-        executor.submit(test_flag_gobuster)
+        executor.submit(test_flag_gobuster),
+        executor.submit(test_flag_nmap)
         ]
-    
     print("Crawling...")
     wait(threads) #block until all threads are done
-    
-    gospider_result = threads[0].result() #result is needed threads array is a future object
-    gobuster_result = threads[1].result()
 
 print("Threads finished")
-#print(gobuster_result.stdout)
-#print(gobuster_result.stderr)
-#print(gospider_result.stdout)
-#print(gospider_result.stderr)
+
 
 
 
