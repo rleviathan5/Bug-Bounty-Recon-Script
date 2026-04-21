@@ -42,14 +42,14 @@ def display_tool_help_menu(help_menu_input):
 
 def test_flag_gospider():
     return subprocess.run(
-        ['gospider', '-s', 'http://127.0.0.1:3000', 
+        ['gospider', '-s', 'http://juice-shop:3000', 
          '-d', '1', '-c', '2', '-t', '2', '--delay', '2', '--verbose'], 
          capture_output=True, 
          text=True)
     
 def test_flag_gobuster():
     return subprocess.run(
-        ['gobuster', 'dir', '-u', 'http://127.0.0.1:3000', 
+        ['gobuster', 'dir', '-u', 'http://juice-shop:3000', 
          '-w', 'common.txt', '-t', '5', '--exclude-length', '75002'], 
          capture_output=True, 
          text=True)
