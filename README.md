@@ -16,6 +16,6 @@ If you would like to bundle OWASP juice-shop together with the script for testin
 4. open seperate terminal for ease
 5. sudo docker exec -it script sh<br>
 
-    at this point, is you 'ls' you'll see the repo files
+    at this point, if you 'ls' you'll see the repo files
 
 6. python recon.py -h
