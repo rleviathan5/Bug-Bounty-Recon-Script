@@ -45,16 +45,18 @@ def test_flag_gospider():
     return subprocess.run(                                              #im talking like 250k+ output lines my poor kali kept blowing up
         ['gospider', '-s', 'http://juice-shop.local:3000', 
          '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', 
-         '--blacklist', pattern, '--output', 'gospider_output']
+         '--blacklist', pattern, '--output', 'gospider_output'],
          capture_output=True, 
-         text=True)
+         text=True
+         )
     
 def test_flag_gobuster():
     return subprocess.run(
         ['gobuster', 'dir', '-u', 'http://juice-shop.local:3000', 
-         '-w', 'common.txt', '-t', '5', '--exclude-length', '75002', '-o', 'gobuster.txt']
+         '-w', 'common.txt', '-t', '5', '--exclude-length', '75002', '-o', 'gobuster.txt'],
          capture_output=True, 
-         text=True)
+         text=True
+         )
 
 def test_flag_nmap():
     return subprocess.run(
