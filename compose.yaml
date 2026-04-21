@@ -10,7 +10,6 @@ services:
     tty: true                         #equivalent to docker run -t
     volumes:
       - .:/app                        #mounts docker workdir to host current dir, intended for accessing file outputs
-    command: tail -f /dev/null
 
   juice-shop:
     image: bkimminich/juice-shop
