@@ -41,16 +41,17 @@ def display_tool_help_menu(help_menu_input):
         display_tool_help_menu(help_menu_input_retry)
 
 def test_flag_gospider():
-    return subprocess.run(
-        ['gospider', '-s', 'http://juice-shop.localhost:3000', 
-         '-d', '1', '-c', '2', '-t', '5'], 
+    pattern = r".*\.(png|jpg|jpeg|gif|svg|ico|css|woff|woff2|ttf|map)$" #unorthodox flags are to stop massive asset explosion due to juice-shop being a single page app
+    return subprocess.run(                                              #im talking like 250k+ output lines my poor kali kept blowing up
+        ['gospider', '-s', 'http://juice-shop.local:3000', 
+         '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', '--blacklist', pattern, '--output', 'gospider_output'], 
          capture_output=True, 
          text=True)
     
 def test_flag_gobuster():
     return subprocess.run(
-        ['gobuster', 'dir', '-u', 'http://juice-shop.localhost:3000', 
-         '-w', 'common.txt', '-t', '5', '--exclude-length', '75002'], 
+        ['gobuster', 'dir', '-u', 'http://juice-shop.local:3000', 
+         '-w', 'common.txt', '-t', '5', '--exclude-length', '75002', '-o', 'gobuster.txt'], 
          capture_output=True, 
          text=True)
 
@@ -91,10 +92,10 @@ with ThreadPoolExecutor(max_workers=2) as executor:
     gobuster_result = threads[1].result()
 
 print("Threads finished")
-print(gobuster_result.stdout)
-print(gobuster_result.stderr)
-print(gospider_result.stdout)
-print(gospider_result.stderr)
+#print(gobuster_result.stdout)
+#print(gobuster_result.stderr)
+#print(gospider_result.stdout)
+#print(gospider_result.stderr)
 
 
 

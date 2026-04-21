@@ -12,7 +12,7 @@ gobuster \
 
 #move gospider to same dir as namp and gobuster
 COPY --from=builder /usr/local/bin/gospider /usr/bin/gospider
-WORKDIR /home/abertay/Bug-Bounty-Recon-Script
+WORKDIR /app
 COPY recon.py .
 COPY common.txt .
 

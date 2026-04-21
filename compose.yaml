@@ -8,6 +8,8 @@ services:
       - recon
     stdin_open: true                  #equivalent to docker run -i
     tty: true                         #equivalent to docker run -t
+    volumes:
+      - .:/app                        #mounts docker workdir to host current dir, intended for accessing file outputs
 
   juice-shop:
     image: bkimminich/juice-shop
@@ -17,8 +19,8 @@ services:
     networks:
       recon:
         aliases:
-        - juice-shop.localhost        #gospider has some strict domain parsing rules!!
+          - juice-shop.local        #gospider has some strict domain parsing rules!!
 
 networks:
-      recon:
-        driver: bridge
+  recon:
+    driver: bridge
