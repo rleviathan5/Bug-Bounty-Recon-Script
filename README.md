@@ -10,11 +10,12 @@ Browse to http://localhost:3000 (on macOS and Windows browse to http://192.168.9
 
 If you would like to bundle OWASP juice-shop together with the script for testing, run the bellow commands:<br>
 
-1. open a terminal in cloned repo
-2. sudo docker-compose up --build -d<br>
-3. open seperate terminal for ease
-4. sudo docker exec -it script sh<br>
+1. git clone https://github.com/rleviathan5/Bug-Bounty-Recon-Script.git
+2. open a terminal in cloned repo
+3. sudo docker-compose up --build -d<br>
+4. open seperate terminal for ease
+5. sudo docker exec -it script sh<br>
 
     at this point, is you 'ls' you'll see the repo files
 
-5. python recon.py -h
+6. python recon.py -h
