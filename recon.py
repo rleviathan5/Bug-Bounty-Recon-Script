@@ -35,31 +35,36 @@ def display_tool_help_menus():
     print(gospider_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
     print(gobuster_h.stdout)
     
-def test_flag_gospider():
-    #--js=false is to stop massive asset explosion due to juice-shop being a single page app
-    return subprocess.run(                                              
-        ['gospider', '-s', 'http://juice-shop.local:3000', 
-         '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', 
-        '--output', 'gospider-output'],
-         capture_output=True, 
-         text=True
-         )
-    
-def test_flag_gobuster():
-    return subprocess.run(
-        ['gobuster', 'dir', '-u', 'http://juice-shop.local:3000', 
-         '-w', 'common.txt', '-t', '5', '--exclude-length', '75002', '-o', 'gobuster.txt'],
-         capture_output=True, 
-         text=True
-         )
 
-def test_flag_nmap():
     return subprocess.run(
         ['nmap', '-sV', '-sS', '-p', '3000', '-oN', 'nmap.txt', 'juice-shop.local'],
         capture_output=True,
         text=True
     )
-    
+
+def test_flag():
+    with ThreadPoolExecutor(max_workers=3) as executor:  
+        threads = [
+            executor.submit(lambda: subprocess.run(
+                ['nmap', '-sV', '-sS', '-p', '3000', '-oN', 'nmap.txt', 'juice-shop.local'],
+                capture_output=True, text=True
+        )),
+            executor.submit(lambda: subprocess.run(                                              
+                ['gospider', '-s', 'http://juice-shop.local:3000', 
+                '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', 
+                '--output', 'gospider-output'],
+                capture_output=True, text=True
+         )),
+            executor.submit(lambda: subprocess.run(
+                ['gobuster', 'dir', '-u', 'http://juice-shop.local:3000', 
+                '-w', 'common.txt', '-t', '5', '--exclude-length', '75002', 
+                '-o', 'gobuster.txt'],
+                capture_output=True, text=True
+         ))
+        ]
+        print("Crawling...")
+        wait(threads) #block until all threads are done
+
 def display_script_help_menu():
     print("\nThis simple Bug Bounty Hunting script uses nmap, gospider and gobuster")
     print("https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster")
@@ -82,27 +87,16 @@ def add_argparse_fields():
     
 
 
-
 def main():
     #check_for_tools()
     args = add_argparse_fields()
 
     if args.test:
-        test_flag_gospider()
+        test_flag()
     if args.tools:
         display_tool_help_menus()
-    '''
-    print("\nThreads starting")
-    with ThreadPoolExecutor(max_workers=3) as executor:  
-        threads = [
-            executor.submit(test_flag_gospider),
-            executor.submit(test_flag_gobuster),
-            executor.submit(test_flag_nmap)
-            ]
-        print("Crawling...")
-        wait(threads) #block until all threads are done
-    print("Threads finished")
-    '''
+
+
 main()
 
 
