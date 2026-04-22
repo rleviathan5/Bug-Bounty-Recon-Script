@@ -16,16 +16,6 @@ def check_for_tools():
 
     print(" | ".join(results)) #seperating print statements with a pipe symbol
 
-def check_valid_ipv4(ipv4_input):
-    ipv4_pattern = r'(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}' ## https://ihateregex.io/expr/ip/
-    match = re.search(ipv4_pattern, ipv4_input)
-
-    if match:
-        return
-    else:
-        ipv4_retry = input("Please enter a valid Ipv4 address: ")
-        check_valid_ipv4(ipv4_retry)
-
 def tools_flag():
     nmap_h = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
     gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
@@ -71,7 +61,7 @@ def domain_flag(input_domain):
         threads = [
             executor.submit(lambda: subprocess.run(
                 ['nmap','-sV', '-sT', '-T3', '-oN', 'nmap.txt', input_domain],
-                text=True
+                capture_output=True, text=True
         )),
             executor.submit(lambda: subprocess.run(                                              
                 ['gospider', '-s', input_domain, 
