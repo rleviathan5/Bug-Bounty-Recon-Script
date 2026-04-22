@@ -4,6 +4,15 @@ from concurrent.futures import ThreadPoolExecutor, wait
 import argparse
 import shlex
 
+def add_argparse_fields():
+    parser = argparse.ArgumentParser(description="Simple Bug Bounty Hunting Recon Tool")
+    parser.add_argument("--tools", action="store_true", required=False, help="Display help menus for packaged recon tools")
+    parser.add_argument("--test", action="store_true", required=False, help="Test recon tools against local OWASP Juice Shop (see README)")
+    parser.add_argument("--domain", metavar=" {target domain}", required=False, help="Specify a target for all recon tools")
+    parser.add_argument("--custom", action="store_true", required=False, help="Reads commands from 'commands.txt' and executes them in parallel")
+
+    return parser.parse_args()
+
 def preprocess_command(commands):
     #to prevent user from executing unintended commands 
     result = []
@@ -104,20 +113,7 @@ def custom_flag():
         wait(threads) #block until all threads are done
         print("Done")
 
-
-
-
-def add_argparse_fields():
-    parser = argparse.ArgumentParser(description="Simple Bug Bounty Hunting Recon Tool")
-    parser.add_argument("--tools", action="store_true", required=False, help="Display help menus for packaged recon tools")
-    parser.add_argument("--test", action="store_true", required=False, help="Test recon tools against local OWASP Juice Shop (see README)")
-    parser.add_argument("--domain", metavar=" {target domain}", required=False, help="Specify a target for all recon tools")
-    parser.add_argument("--custom", action="store_true", required=False, help="Reads commands from 'commands.txt' and executes them in parallel")
-
-    return parser.parse_args()
-    
 def main():
-    #check_for_tools()
     args = add_argparse_fields()
 
     if args.test: test_flag()
