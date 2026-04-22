@@ -14,7 +14,9 @@ def add_argparse_fields():
     return parser.parse_args()
 
 def preprocess_command(commands):
-    #to prevent user from executing unintended commands 
+    #to prevent user from executing unintended commands
+    #evil command gets prepended with nmap/gospider/gobuster so it will fail
+    #valid commands will fucntion as normal
     result = []
     for cmd in commands:
         if not re.search(r'\bnmap\s+', cmd):
