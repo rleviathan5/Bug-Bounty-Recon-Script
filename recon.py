@@ -26,27 +26,21 @@ def check_valid_ipv4(ipv4_input):
         ipv4_retry = input("Please enter a valid Ipv4 address: ")
         check_valid_ipv4(ipv4_retry)
 
-def display_tool_help_menu(help_menu_input):
-    if help_menu_input == "y" or help_menu_input == "Y":
-        nmap_h = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
-        gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
-        gobuster_h = subprocess.run(['gobuster', '-h'], capture_output=True, text=True)
+def display_tool_help_menus():
+    nmap_h = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
+    gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
+    gobuster_h = subprocess.run(['gobuster', '-h'], capture_output=True, text=True)
 
-        print(nmap_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n") #seperating the help menus
-        print(gospider_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
-        print(gobuster_h.stdout)
-    elif help_menu_input == "n" or help_menu_input == "N":
-        return
-    else:
-        help_menu_input_retry = input("Display Tool Help Menus? (y/n): ")
-        display_tool_help_menu(help_menu_input_retry)
-
+    print(nmap_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n") #seperating the help menus
+    print(gospider_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
+    print(gobuster_h.stdout)
+    
 def test_flag_gospider():
-    pattern = r".*\.(png|jpg|jpeg|gif|svg|ico|css|woff|woff2|ttf|map)$" #unorthodox flags are to stop massive asset explosion due to juice-shop being a single page app
+    #--js=false is to stop massive asset explosion due to juice-shop being a single page app
     return subprocess.run(                                              
         ['gospider', '-s', 'http://juice-shop.local:3000', 
          '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', 
-         '--blacklist', pattern, '--output', 'gospider-output'],
+        '--output', 'gospider-output'],
          capture_output=True, 
          text=True
          )
@@ -81,18 +75,25 @@ def display_script_help_menu():
 
 def add_argparse_fields():
     parser = argparse.ArgumentParser(description="Simple Bug Bounty Hunting Recon Tool")
-    parser.add_argument("--tools", required=False, help="Display help menus for packaged recon tools")
+    parser.add_argument("--tools", action="store_true", required=False, help="Display help menus for packaged recon tools")
+    parser.add_argument("--test", action="store_true", required=False, help="Test recon tools against local OWASP Juice Shop (see README)")
 
-    args = parser.parse_args()
+    return parser.parse_args()
+    
 
 
 
 def main():
-    check_for_tools()
-    add_argparse_fields()
-    
+    #check_for_tools()
+    args = add_argparse_fields()
+
+    if args.test:
+        test_flag_gospider()
+    if args.tools:
+        display_tool_help_menus()
+    '''
     print("\nThreads starting")
-    with ThreadPoolExecutor(max_workers=2) as executor:  
+    with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
             executor.submit(test_flag_gospider),
             executor.submit(test_flag_gobuster),
@@ -101,7 +102,7 @@ def main():
         print("Crawling...")
         wait(threads) #block until all threads are done
     print("Threads finished")
-
+    '''
 main()
 
 

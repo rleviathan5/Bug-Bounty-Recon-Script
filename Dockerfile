@@ -16,4 +16,4 @@ WORKDIR /app
 COPY recon.py .
 COPY common.txt .
 
-CMD ["python", "-u", "recon.py"]
+
