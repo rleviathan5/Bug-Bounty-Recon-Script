@@ -3,6 +3,7 @@ import shutil
 import re
 from concurrent.futures import ThreadPoolExecutor, wait
 import argparse
+import shlex
 
 def check_for_tools():
     tools = ['nmap', 'gospider', 'gobuster']
@@ -17,6 +18,7 @@ def check_for_tools():
     print(" | ".join(results)) #seperating print statements with a pipe symbol
 
 def preprocess_command(commands):
+    #to prevent user from executing unintended commands 
     result = []
     for cmd in commands:
         if not re.search(r'\bnmap\s+', cmd):
@@ -72,19 +74,19 @@ def domain_flag(input_domain):
             executor.submit(lambda: subprocess.run(
                 ['nmap','-sV', '-sT', '-T3', '-oN', 'nmap.txt', input_domain],
                 capture_output=True, text=True
-        )),
+            )),
             executor.submit(lambda: subprocess.run(                                              
                 ['gospider', '-s', input_domain, 
                 '-d', '1', '-c', '2', '-t', '4', '-q', 
                 '--output', 'gospider-output'],
                 capture_output=True, text=True
-         )),
+            )),
             executor.submit(lambda: subprocess.run(
                 ['gobuster', 'dir', '-u', input_domain, 
                 '-w', 'common.txt', '-t', '5',
                 '-o', 'gobuster.txt'],
                 capture_output=True, text=True
-        ))
+            ))
         ]
         print("Crawling...")
         wait(threads) #block until all threads are done
@@ -93,15 +95,28 @@ def domain_flag(input_domain):
 def custom_flag():
     with open("commands.txt", "r") as file:
         commands = [line.strip() for line in file]
+        processed_commands = preprocess_command(commands)
 
-
+   
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
             executor.submit(lambda: subprocess.run(
-                ['nmap', commands[0], 'nmap.txt'],
+                ['nmap'] + shlex.split(processed_commands[0]) + ['-oN', 'nmap.txt'],
                 capture_output=True, text=True
-            ))]
-        
+            )),
+            executor.submit(lambda: subprocess.run(                                              
+                ['gospider'] + shlex.split(processed_commands[1]) + ['--output', 'gospider-output'],
+                capture_output=True, text=True
+            )),
+            executor.submit(lambda: subprocess.run(
+                ['gobuster'] + shlex.split(processed_commands[2]) + ['-o', 'gobuster.txt'],
+                capture_output=True, text=True
+            ))
+            ]
+        print("Crawling...")
+        wait(threads) #block until all threads are done
+        print("Done")
+
 
 
 
@@ -123,5 +138,4 @@ def main():
     if args.domain: domain_flag(args.domain) #pass input to function
     if args.custom: custom_flag()
 
-#main()
-custom_flag()
+main()
