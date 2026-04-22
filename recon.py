@@ -32,13 +32,6 @@ def tools_flag():
     print(nmap_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n") #seperating the help menus
     print(gospider_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
     print(gobuster_h.stdout)
-    
-
-    return subprocess.run(
-        ['nmap', '-sV', '-sS', '-p', '3000', '-oN', 'nmap.txt', 'juice-shop.local'],
-        capture_output=True,
-        text=True
-    )
 
 def test_flag():
     with ThreadPoolExecutor(max_workers=3) as executor:  
