@@ -1,21 +1,8 @@
 import subprocess
-import shutil
 import re
 from concurrent.futures import ThreadPoolExecutor, wait
 import argparse
 import shlex
-
-def check_for_tools():
-    tools = ['nmap', 'gospider', 'gobuster']
-    results = []
-
-    for tool in tools:
-        if shutil.which(tool):
-            results.append(f"{tool} exists")
-        else:
-            results.append(f"{tool} missing")
-
-    print(" | ".join(results)) #seperating print statements with a pipe symbol
 
 def preprocess_command(commands):
     #to prevent user from executing unintended commands 
