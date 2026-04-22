@@ -16,10 +16,16 @@ def check_for_tools():
 
     print(" | ".join(results)) #seperating print statements with a pipe symbol
 
-def http_prepend(command):
-    #regex to prepend http onto domains. gospider and gobuster are a bit stricter with domain names
-    return re.sub(r'(-[su]\s+)(?!https?://)(\S+)', r'\1http://\2', command)
+def preprocess_command(commands):
+    result = []
+    for cmd in commands:
+        if not re.search(r'\bnmap\s+', cmd):
+            cmd = re.sub(r'(-[su]\s+)(?!https?://)(\S+)', r'\1http://\2', cmd)
 
+        cmd = re.sub(r'\b(?:nmap|gospider|gobuster)\s+', '', cmd).strip()
+        result.append(cmd)
+    return result
+    
 def tools_flag():
     nmap_h = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
     gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
@@ -61,7 +67,7 @@ def test_flag():
         print("Done")
 
 def domain_flag(input_domain):
-    with ThreadPoolExecutor(max_workers=1) as executor:  
+    with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
             executor.submit(lambda: subprocess.run(
                 ['nmap','-sV', '-sT', '-T3', '-oN', 'nmap.txt', input_domain],
@@ -84,11 +90,27 @@ def domain_flag(input_domain):
         wait(threads) #block until all threads are done
         print("Done")
 
+def custom_flag():
+    with open("commands.txt", "r") as file:
+        commands = [line.strip() for line in file]
+
+
+    with ThreadPoolExecutor(max_workers=3) as executor:  
+        threads = [
+            executor.submit(lambda: subprocess.run(
+                ['nmap', commands[0], 'nmap.txt'],
+                capture_output=True, text=True
+            ))]
+        
+
+
+
 def add_argparse_fields():
     parser = argparse.ArgumentParser(description="Simple Bug Bounty Hunting Recon Tool")
     parser.add_argument("--tools", action="store_true", required=False, help="Display help menus for packaged recon tools")
     parser.add_argument("--test", action="store_true", required=False, help="Test recon tools against local OWASP Juice Shop (see README)")
     parser.add_argument("--domain", metavar=" {target domain}", required=False, help="Specify a target for all recon tools")
+    parser.add_argument("--custom", action="store_true", required=False, help="Reads commands from 'commands.txt' and executes them in parallel")
 
     return parser.parse_args()
     
@@ -99,5 +121,7 @@ def main():
     if args.test: test_flag()
     if args.tools: tools_flag()
     if args.domain: domain_flag(args.domain) #pass input to function
+    if args.custom: custom_flag()
 
-main()
+#main()
+custom_flag()
