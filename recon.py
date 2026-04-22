@@ -64,6 +64,7 @@ def test_flag():
         ]
         print("Crawling...")
         wait(threads) #block until all threads are done
+        print("Done")
 
 def display_script_help_menu():
     print("\nThis simple Bug Bounty Hunting script uses nmap, gospider and gobuster")
@@ -85,8 +86,6 @@ def add_argparse_fields():
 
     return parser.parse_args()
     
-
-
 def main():
     #check_for_tools()
     args = add_argparse_fields()
@@ -96,11 +95,4 @@ def main():
     if args.tools:
         display_tool_help_menus()
 
-
 main()
-
-
-
-
-
-
