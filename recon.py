@@ -2,6 +2,7 @@ import subprocess
 import shutil
 import re
 from concurrent.futures import ThreadPoolExecutor, wait
+import argparse
 
 def check_for_tools():
     tools = ['nmap', 'gospider', 'gobuster']
@@ -42,10 +43,10 @@ def display_tool_help_menu(help_menu_input):
 
 def test_flag_gospider():
     pattern = r".*\.(png|jpg|jpeg|gif|svg|ico|css|woff|woff2|ttf|map)$" #unorthodox flags are to stop massive asset explosion due to juice-shop being a single page app
-    return subprocess.run(                                              #im talking like 250k+ output lines my poor kali kept blowing up
+    return subprocess.run(                                              
         ['gospider', '-s', 'http://juice-shop.local:3000', 
          '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', 
-         '--blacklist', pattern, '--output', 'gospider_output'],
+         '--blacklist', pattern, '--output', 'gospider-output'],
          capture_output=True, 
          text=True
          )
@@ -60,43 +61,43 @@ def test_flag_gobuster():
 
 def test_flag_nmap():
     return subprocess.run(
-        ['nmap', '-sV', '-p', '3000', '-oN', 'nmap.txt', 'juice-shop.local'],
+        ['nmap', '-sV', '-sS', '-p', '3000', '-oN', 'nmap.txt', 'juice-shop.local'],
         capture_output=True,
         text=True
     )
     
-
 def display_script_help_menu():
     print("\nThis simple Bug Bounty Hunting script uses nmap, gospider and gobuster")
     print("https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster")
     print("\nFLAGS:")
     print("\t--help: Display help menu for recon.py script")
     print("\t--tools: Display help menus for packaged recon tools")
-    print("\t--test: Test recon tools against local OWASP Juice Shop - ONLY WORKS IN DOCKER (see README)")
+    print("\t--test: Test recon tools against local OWASP Juice Shop (see README)")
     print("\t--domain {Valid Domain}: Specify a target for all recon tools")
     print("\nRECON TOOL DEFAULT FLAGS")
+    print("\tnmap -sV -sS -oN nmap.txt {target domain}")
+    print("\tgospider -s {target domain} -d 1 -c 2 -t 4 -q --output gospider-output")
+    print("\tgobuster gobuster dir -u {target domain} -w common.txt -t 5 -o gobuster.txt")
     
+def main():
+    check_for_tools()
 
-#main body
-check_for_tools()
+    print("\nSimple Bug Bounty Hunting Recon Tool")
 
-print("\nSimple Bug Bounty Hunting Recon Tool")
-print("Type --help for more information")
-user_input = input() #temporary hand while juice-shop starts
+    user_input = input() #temporary hang while juice-shop starts
 
-print("\nThreads starting")
-with ThreadPoolExecutor(max_workers=2) as executor:  
-    threads = [
-        executor.submit(test_flag_gospider),
-        executor.submit(test_flag_gobuster),
-        executor.submit(test_flag_nmap)
-        ]
-    print("Crawling...")
-    wait(threads) #block until all threads are done
+    print("\nThreads starting")
+    with ThreadPoolExecutor(max_workers=2) as executor:  
+        threads = [
+            executor.submit(test_flag_gospider),
+            executor.submit(test_flag_gobuster),
+            executor.submit(test_flag_nmap)
+            ]
+        print("Crawling...")
+        wait(threads) #block until all threads are done
+    print("Threads finished")
 
-print("Threads finished")
-
-
+main()
 
 
 
