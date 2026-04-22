@@ -16,6 +16,10 @@ def check_for_tools():
 
     print(" | ".join(results)) #seperating print statements with a pipe symbol
 
+def http_prepend(command):
+    #regex to prepend http onto domains. gospider and gobuster are a bit stricter with domain names
+    return re.sub(r'(-[su]\s+)(?!https?://)(\S+)', r'\1http://\2', command)
+
 def tools_flag():
     nmap_h = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
     gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
