@@ -78,14 +78,19 @@ def display_script_help_menu():
     print("\tnmap -sV -sS -oN nmap.txt {target domain}")
     print("\tgospider -s {target domain} -d 1 -c 2 -t 4 -q --output gospider-output")
     print("\tgobuster gobuster dir -u {target domain} -w common.txt -t 5 -o gobuster.txt")
-    
+
+def add_argparse_fields():
+    parser = argparse.ArgumentParser(description="Simple Bug Bounty Hunting Recon Tool")
+    parser.add_argument("--tools", required=False, help="Display help menus for packaged recon tools")
+
+    args = parser.parse_args()
+
+
+
 def main():
     check_for_tools()
-
-    print("\nSimple Bug Bounty Hunting Recon Tool")
-
-    user_input = input() #temporary hang while juice-shop starts
-
+    add_argparse_fields()
+    
     print("\nThreads starting")
     with ThreadPoolExecutor(max_workers=2) as executor:  
         threads = [
