@@ -26,7 +26,7 @@ def check_valid_ipv4(ipv4_input):
         ipv4_retry = input("Please enter a valid Ipv4 address: ")
         check_valid_ipv4(ipv4_retry)
 
-def display_tool_help_menus():
+def tools_flag():
     nmap_h = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
     gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
     gobuster_h = subprocess.run(['gobuster', '-h'], capture_output=True, text=True)
@@ -66,19 +66,6 @@ def test_flag():
         wait(threads) #block until all threads are done
         print("Done")
 
-def display_script_help_menu():
-    print("\nThis simple Bug Bounty Hunting script uses nmap, gospider and gobuster")
-    print("https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster")
-    print("\nFLAGS:")
-    print("\t--help: Display help menu for recon.py script")
-    print("\t--tools: Display help menus for packaged recon tools")
-    print("\t--test: Test recon tools against local OWASP Juice Shop (see README)")
-    print("\t--domain {Valid Domain}: Specify a target for all recon tools")
-    print("\nRECON TOOL DEFAULT FLAGS")
-    print("\tnmap -sV -sS -oN nmap.txt {target domain}")
-    print("\tgospider -s {target domain} -d 1 -c 2 -t 4 -q --output gospider-output")
-    print("\tgobuster gobuster dir -u {target domain} -w common.txt -t 5 -o gobuster.txt")
-
 def add_argparse_fields():
     parser = argparse.ArgumentParser(description="Simple Bug Bounty Hunting Recon Tool")
     parser.add_argument("--tools", action="store_true", required=False, help="Display help menus for packaged recon tools")
@@ -93,6 +80,6 @@ def main():
     if args.test:
         test_flag()
     if args.tools:
-        display_tool_help_menus()
+        tools_flag()
 
 main()
