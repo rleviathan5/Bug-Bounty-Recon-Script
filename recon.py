@@ -8,7 +8,7 @@ def add_argparse_fields():
     parser = argparse.ArgumentParser(description="Simple Bug Bounty Hunting Recon Tool")
     parser.add_argument("--tools", action="store_true", required=False, help="Display help menus for packaged recon tools")
     parser.add_argument("--test", action="store_true", required=False, help="Test recon tools against local OWASP Juice Shop (see README)")
-    parser.add_argument("--domain", metavar=" {target domain}", required=False, help="Specify a target for all recon tools")
+    parser.add_argument("--domain", metavar=" {target}", required=False, help="Specify a target for all recon tools")
     parser.add_argument("--custom", action="store_true", required=False, help="Reads commands from 'commands.txt' and executes them in parallel")
 
     return parser.parse_args()
@@ -88,7 +88,6 @@ def custom_flag():
         commands = [line.strip() for line in file]
         processed_commands = preprocess_command(commands)
 
-   
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
             executor.submit(lambda: subprocess.run(
