@@ -10,8 +10,11 @@ def add_argparse_fields():
     parser.add_argument("--test", action="store_true", required=False, help="Test recon tools against local OWASP Juice Shop (see README)")
     parser.add_argument("--domain", metavar=" {target}", required=False, help="Specify a target for all recon tools")
     parser.add_argument("--custom", action="store_true", required=False, help="Reads commands from 'commands.txt' and executes them in parallel")
-
-    return parser.parse_args()
+    parser.add_argument("--shodan", action="store_true", required=False, help="Query Shodan api against a target")
+    
+    args = parser.parse_args()
+    if args.shodan and not args.domain: parser.error("--shodan requires --domain {target}")
+    return args
 
 def preprocess_command(commands):
     #to prevent user from executing unintended commands
@@ -114,5 +117,6 @@ def main():
     if args.tools: tools_flag()
     if args.domain: domain_flag(args.domain) #pass input to function
     if args.custom: custom_flag()
+    
 
 main()
