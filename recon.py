@@ -13,11 +13,10 @@ def add_argparse_fields():
     parser.add_argument("--test", action="store_true", required=False, help="Test recon tools against local OWASP Juice Shop (see README)")
     parser.add_argument("--domain", metavar=" {target}", required=False, help="Specify a target for all recon tools")
     parser.add_argument("--custom", action="store_true", required=False, help="Reads commands from 'commands.txt' and executes them in parallel")
-    parser.add_argument("--shodan", action="store_true", required=False, help="Query Shodan api against a target")
+    parser.add_argument("--shodan", metavar=" {target}", required=False, help="Query Shodan api against a target")
     
-    args = parser.parse_args()
-    if args.shodan and not args.domain: parser.error("--domain required")
-    return args
+    return parser.parse_args()
+  
 
 def preprocess_command(commands):
     #to prevent user from executing unintended commands
@@ -84,13 +83,13 @@ def domain_flag(input_domain):
             )),
             executor.submit(lambda: subprocess.run(                                              
                 ['gospider', '-s', input_domain, 
-                '-d', '1', '-c', '2', '-t', '4', '-q', 
+                '-d', '1', '-c', '2', '-t', '2', '-q', 
                 '--output', 'output/gospider-output'],
                 capture_output=True, text=True
             )),
             executor.submit(lambda: subprocess.run(
                 ['gobuster', 'dir', '-u', input_domain, 
-                '-w', 'input/common.txt', '-t', '5',
+                '-w', 'input/common.txt', '-t', '1',
                 '-o', 'output/gobuster.txt'],
                 capture_output=True, text=True
             ))
@@ -144,8 +143,8 @@ def main():
 
     if args.test: test_flag()
     if args.tools: tools_flag()
-    #if args.domain: domain_flag(args.domain) #pass input to function
+    if args.domain: domain_flag(args.domain) #pass input to function
     if args.custom: custom_flag()
-    if args.shodan: shodan_flag(args.domain)
+    if args.shodan: shodan_flag(args.shodan)
     
 main()
