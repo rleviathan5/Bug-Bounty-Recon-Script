@@ -12,13 +12,12 @@ def add_argparse_fields():
     parser.add_argument("--tools", action="store_true", required=False, help="Display help menus for packaged recon tools")
     parser.add_argument("--test", action="store_true", required=False, help="Test recon tools against local OWASP Juice Shop (see README)")
     parser.add_argument("--domain", metavar=" {target}", required=False, help="Specify a target for all recon tools")
-    parser.add_argument("--port", metavar="{target port}", required=False, help="Specify a specific port for all recon tools")
+    parser.add_argument("--port", metavar="{target port}", type=int, required=False, help="Specify a specific port for all recon tools")
     parser.add_argument("--custom", action="store_true", required=False, help="Reads commands from 'commands.txt' and executes them in parallel")
     parser.add_argument("--shodan", metavar=" {target}", required=False, help="Query Shodan api against a target")
     
     return parser.parse_args()
   
-
 def preprocess_command(commands):
     #to prevent user from executing unintended commands
     #evil command gets prepended with nmap/gospider/gobuster so it will fail
@@ -51,31 +50,27 @@ def tools_flag():
     print(gospider_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
     print(gobuster_h.stdout)
 
-def test_flag():
+def test_flag(port):
+    nmap_cmd = 'nmap -sV -sS -oN output/nmap.txt juice-shop.local'
+    gospider_cmd = 'gospider -s http://juice-shop.local -d 1 -c 2 -t 4 -q --js=false --output output/gospider-output'
+    gobuster_cmd = 'gobuster dir -u http://juice-shop.local -w input/common.txt -t 5 --exclude-length 75002 -o output/gobuster.txt'
+
+    if port is not None:
+        nmap_cmd + '-p ' + str(port)
+        gospider_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gospider_cmd)
+        gobuster_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gobuster_cmd)
+    
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
-            executor.submit(lambda: subprocess.run(
-                ['nmap', '-sV', '-sS', '-p', '3000', '-oN', 'output/nmap.txt', 'juice-shop.local'],
-                capture_output=True, text=True
-        )),
-            executor.submit(lambda: subprocess.run(                                              
-                ['gospider', '-s', 'http://juice-shop.local:3000', 
-                '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', 
-                '--output', 'output/gospider-output'],
-                capture_output=True, text=True
-        )),
-            executor.submit(lambda: subprocess.run(
-                ['gobuster', 'dir', '-u', 'http://juice-shop.local:3000', 
-                '-w', 'input/common.txt', '-t', '5', '--exclude-length', '75002', 
-                '-o', 'output/gobuster.txt'],
-                capture_output=True, text=True
-        ))
+            executor.submit(lambda: subprocess.run(shlex.split(nmap_cmd), capture_output=True, text=True)),
+            executor.submit(lambda: subprocess.run(shlex.split(gospider_cmd), capture_output=True, text=True)),
+            executor.submit(lambda: subprocess.run(shlex.split(gobuster_cmd), capture_output=True, text=True))
         ]
         print("Crawling...")
         wait(threads) #block until all threads are done
         print("Done")
 
-def domain_flag(input_domain):
+def domain_flag(input_domain, port):
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
             executor.submit(lambda: subprocess.run(
@@ -142,9 +137,9 @@ def shodan_flag(input_domain):
 def main():
     args = add_argparse_fields()
 
-    if args.test: test_flag()
+    if args.test: test_flag(args.port)
     if args.tools: tools_flag()
-    if args.domain: domain_flag(args.domain) #pass input to function
+    if args.domain: domain_flag(args.domain, args.port) #pass input to function
     if args.custom: custom_flag()
     if args.shodan: shodan_flag(args.shodan)
     
