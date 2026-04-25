@@ -3,6 +3,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor, wait
 import argparse
 import shlex
+from shodan import Shodan
 
 def add_argparse_fields():
     parser = argparse.ArgumentParser(description="Simple Bug Bounty Hunting Recon Tool")
@@ -13,7 +14,7 @@ def add_argparse_fields():
     parser.add_argument("--shodan", action="store_true", required=False, help="Query Shodan api against a target")
     
     args = parser.parse_args()
-    if args.shodan and not args.domain: parser.error("--shodan requires --domain {target}")
+    if args.shodan and not args.domain: parser.error("--domain required")
     return args
 
 def preprocess_command(commands):

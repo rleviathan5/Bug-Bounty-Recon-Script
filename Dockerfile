@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
 nmap \
 gobuster \
 && rm -r -f /var/lib/apt/lists/*
+RUN pip install shodan
 
 #move gospider to same dir as namp and gobuster
 COPY --from=builder /usr/local/bin/gospider /usr/bin/gospider
