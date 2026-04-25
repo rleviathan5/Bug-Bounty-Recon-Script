@@ -15,6 +15,6 @@ RUN pip install shodan
 COPY --from=builder /usr/local/bin/gospider /usr/bin/gospider
 WORKDIR /app
 COPY recon.py .
-COPY common.txt .
+COPY input/common.txt .
 
 

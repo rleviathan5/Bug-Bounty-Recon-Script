@@ -55,19 +55,19 @@ def test_flag():
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
             executor.submit(lambda: subprocess.run(
-                ['nmap', '-sV', '-sS', '-p', '3000', '-oN', 'nmap.txt', 'juice-shop.local'],
+                ['nmap', '-sV', '-sS', '-p', '3000', '-oN', 'output/nmap.txt', 'juice-shop.local'],
                 capture_output=True, text=True
         )),
             executor.submit(lambda: subprocess.run(                                              
                 ['gospider', '-s', 'http://juice-shop.local:3000', 
                 '-d', '1', '-c', '2', '-t', '4', '-q', '--js=false', 
-                '--output', 'gospider-output'],
+                '--output', 'output/gospider-output'],
                 capture_output=True, text=True
         )),
             executor.submit(lambda: subprocess.run(
                 ['gobuster', 'dir', '-u', 'http://juice-shop.local:3000', 
-                '-w', 'common.txt', '-t', '5', '--exclude-length', '75002', 
-                '-o', 'gobuster.txt'],
+                '-w', 'input/common.txt', '-t', '5', '--exclude-length', '75002', 
+                '-o', 'output/gobuster.txt'],
                 capture_output=True, text=True
         ))
         ]
@@ -79,19 +79,19 @@ def domain_flag(input_domain):
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
             executor.submit(lambda: subprocess.run(
-                ['nmap','-sV', '-sT', '-T3', '-oN', 'nmap.txt', input_domain],
+                ['nmap','-sV', '-sT', '-T3', '-oN', 'output/nmap.txt', input_domain],
                 capture_output=True, text=True
             )),
             executor.submit(lambda: subprocess.run(                                              
                 ['gospider', '-s', input_domain, 
                 '-d', '1', '-c', '2', '-t', '4', '-q', 
-                '--output', 'gospider-output'],
+                '--output', 'output/gospider-output'],
                 capture_output=True, text=True
             )),
             executor.submit(lambda: subprocess.run(
                 ['gobuster', 'dir', '-u', input_domain, 
-                '-w', 'common.txt', '-t', '5',
-                '-o', 'gobuster.txt'],
+                '-w', 'input/common.txt', '-t', '5',
+                '-o', 'output/gobuster.txt'],
                 capture_output=True, text=True
             ))
         ]
@@ -100,22 +100,22 @@ def domain_flag(input_domain):
         print("Done")
 
 def custom_flag():
-    with open("commands.txt", "r") as file:
+    with open("input/commands.txt", "r") as file:
         commands = [line.strip() for line in file]
         processed_commands = preprocess_command(commands)
 
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
             executor.submit(lambda: subprocess.run(
-                ['nmap'] + shlex.split(processed_commands[0]) + ['-oN', 'nmap.txt'],
+                ['nmap'] + shlex.split(processed_commands[0]) + ['-oN', 'output/nmap.txt'],
                 capture_output=True, text=True
             )),
             executor.submit(lambda: subprocess.run(                                              
-                ['gospider'] + shlex.split(processed_commands[1]) + ['--output', 'gospider-output'],
+                ['gospider'] + shlex.split(processed_commands[1]) + ['--output', 'output/gospider-output'],
                 capture_output=True, text=True
             )),
             executor.submit(lambda: subprocess.run(
-                ['gobuster'] + shlex.split(processed_commands[2]) + ['-o', 'gobuster.txt'],
+                ['gobuster'] + shlex.split(processed_commands[2]) + ['-o', 'output/gobuster.txt'],
                 capture_output=True, text=True
             ))
             ]
@@ -124,7 +124,7 @@ def custom_flag():
         print("Done")
 
 def shodan_flag(input_domain):
-    with open('apikey.txt', 'r') as file:
+    with open('input/apikey.txt', 'r') as file:
         key = file.readline().strip() 
         api = Shodan(key)
     
@@ -133,14 +133,11 @@ def shodan_flag(input_domain):
 
     clean_json, cve_json = split_json_cves(target_info)
 
-    with open('shodan_clean.json', 'w') as file:
+    with open('output/shodan_clean.json', 'w') as file:
         json.dump(clean_json, file, indent=4)
 
-    with open('shodan_cves.json', 'w') as file:
+    with open('output/shodan_cves.json', 'w') as file:
         json.dump(cve_json, file, indent=4)
-
-
-
 
 def main():
     args = add_argparse_fields()
@@ -151,6 +148,4 @@ def main():
     if args.custom: custom_flag()
     if args.shodan: shodan_flag(args.domain)
     
-
-
 main()
