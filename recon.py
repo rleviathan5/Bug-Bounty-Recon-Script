@@ -1,6 +1,6 @@
 import subprocess
 import re
-from concurrent.futures import ThreadPoolExecutor, wait
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import argparse
 import shlex
 from shodan import Shodan
@@ -42,9 +42,12 @@ def split_json_cves(data):
     return data, cves
 
 def tools_flag():
-    nmap_h = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
-    gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
-    gobuster_h = subprocess.run(['gobuster', '-h'], capture_output=True, text=True)
+    try:
+        nmap_h = subprocess.run(['nmap', '-h'], capture_output=True, text=True, check=True)
+        gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True, check=True)
+        gobuster_h = subprocess.run(['gobuster', '-h'], capture_output=True, text=True, check=True)
+    except Exception as e:
+        print(e)
 
     print(nmap_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n") #seperating the help menus
     print(gospider_h.stdout, "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
@@ -60,20 +63,27 @@ def test_flag(port):
         gospider_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gospider_cmd)
         gobuster_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gobuster_cmd)
     
-    with ThreadPoolExecutor(max_workers=3) as executor:  
-        threads = [
-            executor.submit(lambda: subprocess.run(shlex.split(nmap_cmd), capture_output=True, text=True)),
-            executor.submit(lambda: subprocess.run(shlex.split(gospider_cmd), capture_output=True, text=True)),
-            executor.submit(lambda: subprocess.run(shlex.split(gobuster_cmd), capture_output=True, text=True))
-        ]
-        print("Crawling...")
-        wait(threads) #block until all threads are done
-        print("Done")
+    with ThreadPoolExecutor(max_workers=3) as executor:
+            threads = [
+                executor.submit(lambda: subprocess.run(shlex.split(nmap_cmd), capture_output=True, text=True, check=True)),
+                executor.submit(lambda: subprocess.run(shlex.split(gospider_cmd), capture_output=True, text=True, check=True)),
+                executor.submit(lambda: subprocess.run(shlex.split(gobuster_cmd), capture_output=True, text=True, check=True))
+            ]
+
+            print("Crawling...")
+
+            for thread in as_completed(threads): #throw errors as soon as they occur
+                try:
+                    thread.result() #block until all threads are done
+                except Exception as e:
+                    print(e)
+
+            print("Done")
 
 def domain_flag(input_domain, port):
     nmap_cmd = 'nmap -sV -sT -T3 -oN output/nmap.txt ' + input_domain
-    gospider_cmd = 'gospider -s ' + input_domain + ' -d 1 -c 2 -t 2 -q --output output/gospider-output --js=false'
-    gobuster_cmd = 'gobuster dir -u ' + input_domain + ' -w input/common.txt -t 1 -o output/gobuster.txt --exclude-length 75002'
+    gospider_cmd = 'gospider -s ' + input_domain + ' -d 1 -c 2 -t 2 -q --output output/gospider-output'
+    gobuster_cmd = 'gobuster dir -u ' + input_domain + ' -w input/common.txt -t 1 -o output/gobuster.txt'
 
     nmap_cmd = re.sub(r'https?://', '', nmap_cmd) #removing http(s):// from nmap command, gospider and gobuster need the http(s)
 
@@ -84,12 +94,19 @@ def domain_flag(input_domain, port):
 
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
-            executor.submit(lambda: subprocess.run(shlex.split(nmap_cmd), capture_output=True, text=True)),
-            executor.submit(lambda: subprocess.run(shlex.split(gospider_cmd), capture_output=True, text=True)),
-            executor.submit(lambda: subprocess.run(shlex.split(gobuster_cmd), capture_output=True, text=True))
+            executor.submit(lambda: subprocess.run(shlex.split(nmap_cmd), capture_output=True, text=True, check=True)),
+            executor.submit(lambda: subprocess.run(shlex.split(gospider_cmd), capture_output=True, text=True, check=True)),
+            executor.submit(lambda: subprocess.run(shlex.split(gobuster_cmd), capture_output=True, text=True, check=True))
         ]
+
         print("Crawling...")
-        wait(threads) #block until all threads are done
+
+        for thread in as_completed(threads): #throw errors as soon as they occur
+            try:
+                thread.result() #block until all threads are done
+            except Exception as e:
+                print(e)
+
         print("Done")
 
 def custom_flag():
@@ -99,21 +116,19 @@ def custom_flag():
 
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
-            executor.submit(lambda: subprocess.run(
-                ['nmap'] + shlex.split(processed_commands[0]) + ['-oN', 'output/nmap.txt'],
-                capture_output=True, text=True
-            )),
-            executor.submit(lambda: subprocess.run(                                              
-                ['gospider'] + shlex.split(processed_commands[1]) + ['--output', 'output/gospider-output'],
-                capture_output=True, text=True
-            )),
-            executor.submit(lambda: subprocess.run(
-                ['gobuster'] + shlex.split(processed_commands[2]) + ['-o', 'output/gobuster.txt'],
-                capture_output=True, text=True
-            ))
+            executor.submit(lambda: subprocess.run(['nmap'] + shlex.split(processed_commands[0]) + ['-oN', 'output/nmap.txt'], capture_output=True, text=True, check=True)),
+            executor.submit(lambda: subprocess.run(['gospider'] + shlex.split(processed_commands[1]) + ['--output', 'output/gospider-output'], capture_output=True, text=True, check=True)),
+            executor.submit(lambda: subprocess.run(['gobuster'] + shlex.split(processed_commands[2]) + ['-o', 'output/gobuster.txt'], capture_output=True, text=True, check=True))
             ]
+        
         print("Crawling...")
-        wait(threads) #block until all threads are done
+
+        for thread in as_completed(threads): #throw errors as soon as they occur
+            try:
+                thread.result() #block until all threads are done
+            except Exception as e:
+                print(e)
+
         print("Done")
 
 def shodan_flag(input_domain):
@@ -121,9 +136,12 @@ def shodan_flag(input_domain):
         key = file.readline().strip() 
         api = Shodan(key)
     
-    target_ip = socket.gethostbyname(input_domain) #free shodan api doesnt allow domain lookups, so need to resolve domain to an ip before parsing to shodan
-    target_info = api.host(target_ip)
-
+    try:
+        target_ip = socket.gethostbyname(input_domain) #free shodan api doesnt allow domain lookups, so need to resolve domain to an ip before parsing to shodan
+        target_info = api.host(target_ip)
+    except Exception as e:
+        print(e)
+    
     clean_json, cve_json = split_json_cves(target_info)
 
     with open('output/shodan_clean.json', 'w') as file:
