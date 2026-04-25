@@ -32,6 +32,8 @@ def preprocess_custom_flag(commands):
     return result
     
 def split_json_cves(data):
+    #modifying the returned json in place
+    #delete the cve info from original and append it to a new array
     cves = []
 
     for service in data.get('data', []):
@@ -55,12 +57,12 @@ def tools_flag():
 
 def test_flag(port):
     nmap_cmd = 'nmap -sV -sS -oN output/nmap.txt juice-shop.local'
-    gospider_cmd = 'gospider -s http://juice-shop.local -d 1 -c 2 -t 4 -q --js=false --output output/gospider-output'
-    gobuster_cmd = 'gobuster dir -u http://juice-shop.local -w input/common.txt -t 5 --exclude-length 75002 -o output/gobuster.txt'
+    gospider_cmd = 'gospider -s http://juice-shop.local -d 1 -c 2 -t 4 -q --js=false --output output/gospider-output' #--js=false to stop massive asset explosion when crawling juice-shop
+    gobuster_cmd = 'gobuster dir -u http://juice-shop.local -w input/common.txt -t 5 --exclude-length 75002 -o output/gobuster.txt' #--exclude-length 75002 juice-shop specific setting
 
     if port is not None:
-        nmap_cmd + '-p ' + str(port)
-        gospider_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gospider_cmd)
+        nmap_cmd + '-p ' + str(port) #append '-p {port}' to nmap command
+        gospider_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gospider_cmd) #find either the '-s' or '-u' switch, go to the end of the next string and append ':{port}'
         gobuster_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gobuster_cmd)
     
     with ThreadPoolExecutor(max_workers=3) as executor:
@@ -88,8 +90,8 @@ def domain_flag(input_domain, port):
     nmap_cmd = re.sub(r'https?://', '', nmap_cmd) #removing http(s):// from nmap command, gospider and gobuster need the http(s)
 
     if port is not None:
-        nmap_cmd + '-p ' + str(port)
-        gospider_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gospider_cmd)
+        nmap_cmd + '-p ' + str(port) #append '-p {port}' to nmap command
+        gospider_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gospider_cmd) #find either the '-s' or '-u' switch, go to the end of the next string and append ':{port}'
         gobuster_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gobuster_cmd)
 
     with ThreadPoolExecutor(max_workers=3) as executor:  
