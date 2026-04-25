@@ -18,7 +18,7 @@ def add_argparse_fields():
     
     return parser.parse_args()
   
-def preprocess_command(commands):
+def preprocess_custom_flag(commands):
     #to prevent user from executing unintended commands
     #evil command gets prepended with nmap/gospider/gobuster so it will fail
     #valid commands will function as normal
@@ -71,24 +71,22 @@ def test_flag(port):
         print("Done")
 
 def domain_flag(input_domain, port):
+    nmap_cmd = 'nmap -sV -sT -T3 -oN output/nmap.txt' + input_domain
+    gospider_cmd = 'gospider -s' + input_domain + '-d 1 -c 2 -t 2 -q --output output/gospider-output'
+    gobuster_cmd = 'gobuster dir -u' + input_domain + '-w input/common.txt -t 1 -o output/gobuster.txt'
+
+    nmap_cmd = re.sub(r'https?://', '', nmap_cmd) #removing http(s):// from nmap command, gospider and gobuster need the http(s)
+
+    if port is not None:
+        nmap_cmd + '-p ' + str(port)
+        gospider_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gospider_cmd)
+        gobuster_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gobuster_cmd)
+
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
-            executor.submit(lambda: subprocess.run(
-                ['nmap','-sV', '-sT', '-T3', '-oN', 'output/nmap.txt', input_domain],
-                capture_output=True, text=True
-            )),
-            executor.submit(lambda: subprocess.run(                                              
-                ['gospider', '-s', input_domain, 
-                '-d', '1', '-c', '2', '-t', '2', '-q', 
-                '--output', 'output/gospider-output'],
-                capture_output=True, text=True
-            )),
-            executor.submit(lambda: subprocess.run(
-                ['gobuster', 'dir', '-u', input_domain, 
-                '-w', 'input/common.txt', '-t', '1',
-                '-o', 'output/gobuster.txt'],
-                capture_output=True, text=True
-            ))
+            executor.submit(lambda: subprocess.run(nmap_cmd, capture_output=True, text=True)),
+            executor.submit(lambda: subprocess.run(gospider_cmd, capture_output=True, text=True)),
+            executor.submit(lambda: subprocess.run(gobuster_cmd, capture_output=True, text=True))
         ]
         print("Crawling...")
         wait(threads) #block until all threads are done
@@ -97,7 +95,7 @@ def domain_flag(input_domain, port):
 def custom_flag():
     with open("input/commands.txt", "r") as file:
         commands = [line.strip() for line in file]
-        processed_commands = preprocess_command(commands)
+        processed_commands = preprocess_custom_flag(commands)
 
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
