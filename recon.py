@@ -4,6 +4,8 @@ from concurrent.futures import ThreadPoolExecutor, wait
 import argparse
 import shlex
 from shodan import Shodan
+import socket
+import json
 
 def add_argparse_fields():
     parser = argparse.ArgumentParser(description="Simple Bug Bounty Hunting Recon Tool")
@@ -20,7 +22,7 @@ def add_argparse_fields():
 def preprocess_command(commands):
     #to prevent user from executing unintended commands
     #evil command gets prepended with nmap/gospider/gobuster so it will fail
-    #valid commands will fucntion as normal
+    #valid commands will function as normal
     result = []
     for cmd in commands:
         if not re.search(r'\bnmap\s+', cmd):
@@ -111,13 +113,24 @@ def custom_flag():
         wait(threads) #block until all threads are done
         print("Done")
 
+def shodan_flag(input_domain):
+    with open('apikey.txt', 'r') as file:
+        key = file.readline().strip() 
+        api = Shodan(key)
+    
+    target_ip = socket.gethostbyname(input_domain) #free shodan api doesnt allow domain lookups, so need to resolve domain to an ip before parsing to shodan
+    target_info = api.host(target_ip)
+    print(json.dumps(target_info,indent=4, sort_keys=True))
+
+
 def main():
     args = add_argparse_fields()
 
     if args.test: test_flag()
     if args.tools: tools_flag()
-    if args.domain: domain_flag(args.domain) #pass input to function
+    #if args.domain: domain_flag(args.domain) #pass input to function
     if args.custom: custom_flag()
+    if args.shodan: shodan_flag(args.domain)
     
 
 main()
