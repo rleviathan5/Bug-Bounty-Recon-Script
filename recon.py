@@ -32,6 +32,16 @@ def preprocess_command(commands):
         result.append(cmd)
     return result
     
+def split_json_cves(data):
+    cves = []
+
+    for service in data.get('data', []):
+        if 'vulns' in service:
+            cves.append(service['vulns'])
+            del service['vulns']
+
+    return data, cves
+
 def tools_flag():
     nmap_h = subprocess.run(['nmap', '-h'], capture_output=True, text=True)
     gospider_h = subprocess.run(['gospider', '-h'], capture_output=True, text=True)
@@ -120,7 +130,16 @@ def shodan_flag(input_domain):
     
     target_ip = socket.gethostbyname(input_domain) #free shodan api doesnt allow domain lookups, so need to resolve domain to an ip before parsing to shodan
     target_info = api.host(target_ip)
-    print(json.dumps(target_info,indent=4, sort_keys=True))
+
+    clean_json, cve_json = split_json_cves(target_info)
+
+    with open('shodan_clean.json', 'w') as file:
+        json.dump(clean_json, file, indent=4)
+
+    with open('shodan_cves.json', 'w') as file:
+        json.dump(cve_json, file, indent=4)
+
+
 
 
 def main():
@@ -132,5 +151,6 @@ def main():
     if args.custom: custom_flag()
     if args.shodan: shodan_flag(args.domain)
     
+
 
 main()
