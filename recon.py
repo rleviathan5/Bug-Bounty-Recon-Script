@@ -71,9 +71,9 @@ def test_flag(port):
         print("Done")
 
 def domain_flag(input_domain, port):
-    nmap_cmd = 'nmap -sV -sT -T3 -oN output/nmap.txt' + input_domain
-    gospider_cmd = 'gospider -s' + input_domain + '-d 1 -c 2 -t 2 -q --output output/gospider-output'
-    gobuster_cmd = 'gobuster dir -u' + input_domain + '-w input/common.txt -t 1 -o output/gobuster.txt'
+    nmap_cmd = 'nmap -sV -sT -T3 -oN output/nmap.txt ' + input_domain
+    gospider_cmd = 'gospider -s ' + input_domain + ' -d 1 -c 2 -t 2 -q --output output/gospider-output --js=false'
+    gobuster_cmd = 'gobuster dir -u ' + input_domain + ' -w input/common.txt -t 1 -o output/gobuster.txt --exclude-length 75002'
 
     nmap_cmd = re.sub(r'https?://', '', nmap_cmd) #removing http(s):// from nmap command, gospider and gobuster need the http(s)
 
@@ -84,9 +84,9 @@ def domain_flag(input_domain, port):
 
     with ThreadPoolExecutor(max_workers=3) as executor:  
         threads = [
-            executor.submit(lambda: subprocess.run(nmap_cmd, capture_output=True, text=True)),
-            executor.submit(lambda: subprocess.run(gospider_cmd, capture_output=True, text=True)),
-            executor.submit(lambda: subprocess.run(gobuster_cmd, capture_output=True, text=True))
+            executor.submit(lambda: subprocess.run(shlex.split(nmap_cmd), capture_output=True, text=True)),
+            executor.submit(lambda: subprocess.run(shlex.split(gospider_cmd), capture_output=True, text=True)),
+            executor.submit(lambda: subprocess.run(shlex.split(gobuster_cmd), capture_output=True, text=True))
         ]
         print("Crawling...")
         wait(threads) #block until all threads are done
