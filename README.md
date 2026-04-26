@@ -242,3 +242,7 @@ Then run `python recon.py --custom`
 
 ---
 
+To customize the wordlist that gobuster uses, naviagte to input/ dir:
+    <p align="center"><img src="images/10.png" width="800"></p>
+
+Delete "common.txt", paste a wordlist of your choice and rename it to "common.txt" to allow gobuster to read it
