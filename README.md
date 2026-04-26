@@ -21,8 +21,15 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
         gobuster gobuster dir -u {target domain} -w input/common.txt -t 1 -o output/gobuster.txt
 
 ## Getting Started
-**Check if Docker is installed on your system**
+**Check if Docker is installed on your system (LINUX ONLY, USE DOCKER DESKTOP IF ON WINDOWS)**<br>
 `docker --version`
+**If Docker is installed, move to installation instructions**<br>
+**If not installed, run these commands:**
+    1. sudo apt update
+    2. sudo apt install docker.io
+    3. sudo systemctl start docker
+    4. sudo systemctl enable docker
+    5. sudo systemctl status docker
 
 
 
