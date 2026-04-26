@@ -80,10 +80,11 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
      <p align="center"><img src="images/7.png" width="800"></p>
 
 ## Usage Examples
-`python recon.py --test`
+`python recon.py --test --port 3000`
 
 Ouput:
-
+<div style="height:200px; overflow:auto; padding:10px; border-radius:6px;">
+<pre><code>
     # Nmap 7.93 scan initiated Sun Apr 26 16:22:09 2026 as: nmap -sV -sS -oN output/nmap.txt juice-shop.local
     Nmap scan report for juice-shop.local (172.18.0.3)
     Host is up (0.000014s latency).
@@ -126,3 +127,5 @@ Ouput:
 
     Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
     # Nmap done at Sun Apr 26 16:22:21 2026 -- 1 IP address (1 host up) scanned in 11.97 seconds
+</code></pre>
+</div>
