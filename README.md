@@ -59,7 +59,7 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 
 4. **Open seperate terminal for ease:**
 
-    <p align="center"><img src="images/2.png" width="400"></p>
+    <p align="center"><img src="images/2.png" width="750"></p>
 
 5. `sudo docker exec -it script sh`<br>
 
