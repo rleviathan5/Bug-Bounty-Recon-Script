@@ -51,18 +51,22 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 
 1. `git clone https://github.com/rleviathan5/Bug-Bounty-Recon-Script.git`
 
-2.  **Open a terminal in cloned repo:**
+2.  Open a terminal in cloned repo:
 
     <p align="center"><img src="images/1.png" width="400"></p>
 
 3. `sudo docker-compose up --build -d`<br>
 
-4. **Open seperate terminal for ease:**
+4. Open seperate terminal for ease:
 
     <p align="center"><img src="images/2.png" width="1000"></p>
 
 5. `sudo docker exec -it script sh`<br>
 
-at this point, if you 'ls' you'll see the repo files
+6. At this point, if you 'ls' you'll see the repo files:
 
-6. `python recon.py -h`
+    <p align="center"><img src="images/3.png" width="400"></p>
+
+7. `python recon.py -h`
+
+    <p align="center"><img src="images/4.png" width="400"></p>
