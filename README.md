@@ -83,7 +83,7 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 `python recon.py --test --port 3000`
 
 Ouput:
-<div style="height:200px; overflow:auto; padding:10px; border-radius:6px;">
+<div style="height:300px; overflow-y:auto; overflow-x:hidden padding:10px; border-radius:6px;">
 <pre><code>
     # Nmap 7.93 scan initiated Sun Apr 26 16:22:09 2026 as: nmap -sV -sS -oN output/nmap.txt juice-shop.local
     Nmap scan report for juice-shop.local (172.18.0.3)
