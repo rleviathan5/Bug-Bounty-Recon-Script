@@ -1,14 +1,10 @@
 # <h1 align="center">Bug-Bounty-Recon-Script</h1>
 
-
-
 ## Description
 This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting. The script is intended to be used within a Docker image, but it not required.<br>
 
 https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster
     
-
-
 ### Script Flags
     FLAGS:
         --help: Display help menu for recon.py script
@@ -23,8 +19,6 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
         nmap -sV -sS -oN output/nmap.txt {target domain}
         gospider -s {target domain} -d 1 -c 2 -t 2 -q --output output/gospider-output
         gobuster gobuster dir -u {target domain} -w input/common.txt -t 1 -o output/gobuster.txt
-
-
 
 ## Getting Started
 **Check if Docker is installed on your system (LINUX ONLY, USE DOCKER DESKTOP IF ON WINDOWS)**<br>
@@ -43,25 +37,22 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 
 `sudo docker run hello-world`
 
-
-
 ## Setting up Docker Images
-
-**If you would like to bundle OWASP juice-shop together with the script for testing, run the bellow commands:**<br>
+**If you want to bundle OWASP juice-shop together with the script for testing, run the bellow commands:**<br>
 
 1. `git clone https://github.com/rleviathan5/Bug-Bounty-Recon-Script.git`
 
 2.  Open a terminal in cloned repo:
 
-    <p align="center"><img src="images/1.png" width="800"></p>
+    <p align="center"><img src="images/1.png" width="700"></p>
 
-3. `sudo docker-compose up --build -d`<br>
+3. `sudo docker-compose up --build -d`<
 
 4. Open seperate terminal for ease:
 
     <p align="center"><img src="images/2.png" width="1000"></p>
 
-5. `sudo docker exec -it script sh`<br>
+5. `sudo docker exec -it script sh`
 
 6. At this point, if you 'ls' you'll see the repo files:
 
@@ -70,3 +61,12 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 7. `python recon.py -h`
 
     <p align="center"><img src="images/4.png" width="800"></p>
+
+**If you want to just run the script without OWASP juice-shop, run the below commands:**
+1. Open a terminal in cloned repo:
+
+    <p align="center"><img src="images/1.png" width="700"></p>
+
+2. `sudo docker build -t recon .`
+
+    <p align="center"><img src="images/5.png" width="800"></p>
