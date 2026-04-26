@@ -223,7 +223,6 @@ This command will run:<br>
 ---
 
 Copy shodan API key into input/apikey.txt:
-
     <p align="center"><img src="images/8.png" width="800"></p>
 
 Then run `python recon.py --shodan {target}`
