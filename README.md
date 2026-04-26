@@ -1,10 +1,14 @@
 # <h1 align="center">Bug-Bounty-Recon-Script</h1>
 
+
+
 ## Description
 This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting. The script is intended to be used within a Docker image, but it not required.<br>
 
 https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster
     
+
+
 ### Script Flags
     FLAGS:
         --help: Display help menu for recon.py script
@@ -19,6 +23,8 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
         nmap -sV -sS -oN output/nmap.txt {target domain}
         gospider -s {target domain} -d 1 -c 2 -t 2 -q --output output/gospider-output
         gobuster gobuster dir -u {target domain} -w input/common.txt -t 1 -o output/gobuster.txt
+
+
 
 ## Getting Started
 **Check if Docker is installed on your system (LINUX ONLY, USE DOCKER DESKTOP IF ON WINDOWS)**<br>
@@ -37,12 +43,17 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 
 `sudo docker run hello-world`
 
+
+
 ## Setting up Docker Images
 
 **If you would like to bundle OWASP juice-shop together with the script for testing, run the bellow commands:**<br>
 
-1. `git clone [GitHub](https://github.com/rleviathan5/Bug-Bounty-Recon-Script.git)`
-2. `open a terminal in cloned repo`
+1. `git clone https://github.com/rleviathan5/Bug-Bounty-Recon-Script.git`
+
+2.  open a terminal in cloned repo:
+    ![Screenshot](images/1.png)
+
 3. `sudo docker-compose up --build -d`<br>
 4. `open seperate terminal for ease`
 5. `sudo docker exec -it script sh`<br>
