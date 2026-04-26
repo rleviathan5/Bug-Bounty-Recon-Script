@@ -222,8 +222,12 @@ This command will run:<br>
 
 ---
 
-`python recon.py --shodan {target}`
+Copy shodan API key into input/apikey.txt:
 
-[View info from Shodan query](output/shodan_clean.json)
-[View CVEs from Shodan query](output/shodan_cves.json)
+    <p align="center"><img src="images/8.png" width="800"></p>
+
+Then run `python recon.py --shodan {target}`
+
+[View info from Shodan query](output/shodan_clean.json)<br>
+[View CVEs from Shodan query](output/shodan_cves.json)<br>
 
