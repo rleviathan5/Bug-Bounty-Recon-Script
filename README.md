@@ -13,7 +13,9 @@ While the default settings are designed to be as non-intrusive as possible, thor
 The development of this script was possible by only conducting against a locally hosted OWASP juice-shop website, and the legally authorised machine provided by the Nmap Security Scanner Project.
 
 [Legally authorised machine for scanning](http://scanme.nmap.org/)
-    
+
+---
+
 ### Script Flags
     FLAGS:
         --help: Display help menu for recon.py script
