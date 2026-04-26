@@ -13,7 +13,7 @@ def add_argparse_fields():
     parser.add_argument("--test", action="store_true", required=False, help="Test recon tools against local OWASP Juice Shop (see README)")
     parser.add_argument("--domain", metavar=" {target}", required=False, help="Specify a target for all recon tools")
     parser.add_argument("--port", metavar="{target port}", type=int, required=False, help="Specify a specific port for all recon tools")
-    parser.add_argument("--custom", action="store_true", required=False, help="Reads commands from 'commands.txt' and executes them in parallel")
+    parser.add_argument("--custom", action="store_true", required=False, help="Reads commands from 'input/commands.txt' and executes them in parallel")
     parser.add_argument("--shodan", metavar=" {target}", required=False, help="Query Shodan api against a target")
     
     return parser.parse_args()
@@ -83,7 +83,7 @@ def test_flag(port):
             print("Done")
 
 def domain_flag(input_domain, port):
-    nmap_cmd = 'nmap -sV -sT -T3 -oN output/nmap.txt ' + input_domain
+    nmap_cmd = 'nmap -sV -sS -T3 -oN output/nmap.txt ' + input_domain
     gospider_cmd = 'gospider -s ' + input_domain + ' -d 1 -c 2 -t 2 -q --output output/gospider-output'
     gobuster_cmd = 'gobuster dir -u ' + input_domain + ' -w input/common.txt -t 1 -o output/gobuster.txt'
 
