@@ -1,7 +1,7 @@
 # <h1 align="center">Bug-Bounty-Recon-Script</h1>
 
 ## Description
-This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting.<br>
+This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting. The script is intended to be used within a Docker image, but it not required.<br>
 
 https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster
     
@@ -20,7 +20,12 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
         gospider -s {target domain} -d 1 -c 2 -t 2 -q --output output/gospider-output
         gobuster gobuster dir -u {target domain} -w input/common.txt -t 1 -o output/gobuster.txt
 
-## Installation
+## Getting Started
+**Check if Docker is installed on your system**
+'docker --version'
+
+
+
 
 To test script against a legal target, you can optionally host OWASP Juice Shop:<br>
 https://hub.docker.com/r/bkimminich/juice-shop#setup
