@@ -72,3 +72,11 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 2. `sudo docker build -t recon .`
 
     <p align="center"><img src="images/5.png" width="800"></p>
+
+3. `sudo docker run -it -v $(pwd):/app recon /bin/sh`
+
+    <p align="center"><img src="images/6.png" width="800"></p>
+
+4. `python recon.py -h`
+
+     <p align="center"><img src="images/7.png" width="800"></p>
