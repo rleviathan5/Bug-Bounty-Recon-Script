@@ -33,9 +33,11 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 4. `sudo systemctl enable docker`<br>
 5. `sudo systemctl status docker`<br>
 
+**Test docker installation:**<br>
 
+`sudo docker run hello-world`
 
-
+## Setting up Docker Images
 To test script against a legal target, you can optionally host OWASP Juice Shop:<br>
 https://hub.docker.com/r/bkimminich/juice-shop#setup
 
