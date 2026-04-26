@@ -1,22 +1,22 @@
-# Bug-Bounty-Recon-Script
+# <h1 align="center">Bug-Bounty-Recon-Script</h1>
 
 ## Description
 This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting.<br>
 
+Consult relevant documentation here: https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster
+    
+### Script Flags
+    FLAGS:
+    --help: Display help menu for recon.py script
+    --tools: Display help menus for packaged recon tools
+    --test: Test recon tools against local OWASP Juice Shop (requires docker-compose up)
+    --domain {Valid Domain}: Specify a target for all recon tools
+    RECON TOOL DEFAULT FLAGS
+    nmap -sV -sS -oN nmap.txt {target domain}
+    gospider -s {target domain} -d 1 -c 2 -t 4 -q --output gospider-output
+    gobuster gobuster dir -u {target domain} -w common.txt -t 5 -o gobuster.txt
 
-
-    https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster<br>
-    FLAGS:<br>
-    --help: Display help menu for recon.py script<br>
-    --tools: Display help menus for packaged recon tools<br>
-    --test: Test recon tools against local OWASP Juice Shop (requires docker-compose up)<br>
-    --domain {Valid Domain}: Specify a target for all recon tools<br>
-    RECON TOOL DEFAULT FLAGS<br>
-    nmap -sV -sS -oN nmap.txt {target domain}<br>
-    gospider -s {target domain} -d 1 -c 2 -t 4 -q --output gospider-output<br>
-    gobuster gobuster dir -u {target domain} -w common.txt -t 5 -o gobuster.txt<br>
-
-
+## Installation
 
 To test script against a legal target, you can optionally host OWASP Juice Shop:<br>
 https://hub.docker.com/r/bkimminich/juice-shop#setup
