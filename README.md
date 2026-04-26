@@ -22,7 +22,7 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 
 ## Getting Started
 **Check if Docker is installed on your system**
-'docker --version'
+`docker --version`
 
 
 
