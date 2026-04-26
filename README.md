@@ -1,5 +1,5 @@
 ## Description
-This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting. The script is intended to be used within a Docker image, but it not required.<br>
+This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting. The script is intended to be used within a Docker image, but it is not required.<br>
 
 https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster
     
@@ -213,7 +213,9 @@ http://juice-shop.local:3000/ftp
 
 ---
 
-`python recon.py --domain {target}`
+`python recon.py --domain http(s)://example.com`
+
+
 
 This command will run:<br>
     `nmap -sV -sS -oN output/nmap.txt {target domain}`<br>
@@ -225,8 +227,18 @@ This command will run:<br>
 Copy shodan API key into input/apikey.txt:
     <p align="center"><img src="images/8.png" width="800"></p>
 
-Then run `python recon.py --shodan {target}`
+Then run `python recon.py --shodan http(s)://example.com`
 
 [View info from Shodan query](output/shodan_clean.json)<br>
 [View CVEs from Shodan query](output/shodan_cves.json)<br>
+
+---
+
+Put any custom tool commands in the input/commands.txt file:
+    <p align="center"><img src="images/9.png" width="800"></p>
+
+
+Then run `python recon.py --custom`
+
+---
 
