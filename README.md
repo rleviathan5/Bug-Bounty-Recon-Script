@@ -82,10 +82,8 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 ## Usage Examples
 `python recon.py --test --port 3000`
 
-Ouput:
-<div style="height:300px; overflow-y:auto; overflow-x:hidden; background:#0d1117; padding:10px; border-radius:6px;">
-<pre style="white-space: pre-wrap;">
-<pre><code>
+Nmap Ouput:
+```text
 # Nmap 7.93 scan initiated Sun Apr 26 16:22:09 2026 as: nmap -sV -sS -oN output/nmap.txt juice-shop.local
 Nmap scan report for juice-shop.local (172.18.0.3)
 Host is up (0.000014s latency).
@@ -128,5 +126,86 @@ MAC Address: 6A:28:E2:4A:62:69 (Unknown)
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 #Nmap done at Sun Apr 26 16:22:21 2026 -- 1 IP address (1 host up) scanned in 11.97 seconds
-</code></pre>
-</div>
+```
+
+Gobuster Output:
+
+```text
+/.well-known/security.txt (Status: 200) [Size: 475]
+/Video                (Status: 200) [Size: 10075518]
+/api                  (Status: 500) [Size: 3011]
+/api/experiments      (Status: 500) [Size: 3035]
+/api/experiments/configurations (Status: 500) [Size: 3065]
+/apis                 (Status: 500) [Size: 3013]
+/assets               (Status: 301) [Size: 156] [--> /assets/]
+/ftp                  (Status: 200) [Size: 11307]
+/media                (Status: 301) [Size: 155] [--> /media/]
+/profile              (Status: 500) [Size: 1043]
+/promotion            (Status: 200) [Size: 6459]
+/redirect             (Status: 500) [Size: 3113]
+/rest                 (Status: 500) [Size: 3013]
+/restaurants          (Status: 500) [Size: 3027]
+/restore              (Status: 500) [Size: 3019]
+/restored             (Status: 500) [Size: 3021]
+/restricted           (Status: 500) [Size: 3025]
+/robots.txt           (Status: 200) [Size: 28]
+/security.txt         (Status: 200) [Size: 475]
+/video                (Status: 200) [Size: 10075518]
+```
+
+Gospider Output:
+
+```text
+http://juice-shop.local:3000/ftp
+http://juice-shop.local:3000
+http://juice-shop.local:3000/ftp
+[href] - http://juice-shop.local:3000/assets/public/favicon_js.ico
+[href] - http://juice-shop.local:3000/styles.css
+[href] - http://juice-shop.local:3000/chunk-24EZLZ4I.js
+[href] - http://juice-shop.local:3000/chunk-T3PSKZ45.js
+[href] - http://juice-shop.local:3000/chunk-4MIYPPGW.js
+[href] - http://juice-shop.local:3000/chunk-LHKS7QUN.js
+[href] - http://juice-shop.local:3000/chunk-TWZW5B45.js
+[javascript] - http://juice-shop.local:3000/polyfills.js
+[javascript] - http://juice-shop.local:3000/scripts.js
+[javascript] - http://juice-shop.local:3000/main.js
+[href] - http://juice-shop.local:3000/
+[href] - http://juice-shop.local:3000/ftp
+[href] - http://juice-shop.local:3000/ftp/quarantine
+[href] - http://juice-shop.local:3000/ftp/acquisitions.md
+[href] - http://juice-shop.local:3000/ftp/announcement_encrypted.md
+[href] - http://juice-shop.local:3000/ftp/coupons_2013.md.bak
+[href] - http://juice-shop.local:3000/ftp/eastere.gg
+[href] - http://juice-shop.local:3000/ftp/encrypt.pyc
+[href] - http://juice-shop.local:3000/ftp/incident-support.kdbx
+[href] - http://juice-shop.local:3000/ftp/legal.md
+[href] - http://juice-shop.local:3000/ftp/package-lock.json.bak
+[href] - http://juice-shop.local:3000/ftp/package.json.bak
+[href] - http://juice-shop.local:3000/ftp/suspicious_errors.yml
+http://juice-shop.local:3000/ftp
+http://juice-shop.local:3000
+http://juice-shop.local:3000/ftp
+[href] - http://juice-shop.local:3000/assets/public/favicon_js.ico
+[href] - http://juice-shop.local:3000/styles.css
+[href] - http://juice-shop.local:3000/chunk-24EZLZ4I.js
+[href] - http://juice-shop.local:3000/chunk-T3PSKZ45.js
+[href] - http://juice-shop.local:3000/chunk-4MIYPPGW.js
+[href] - http://juice-shop.local:3000/chunk-LHKS7QUN.js
+[href] - http://juice-shop.local:3000/chunk-TWZW5B45.js
+[javascript] - http://juice-shop.local:3000/polyfills.js
+[javascript] - http://juice-shop.local:3000/scripts.js
+[javascript] - http://juice-shop.local:3000/main.js
+[href] - http://juice-shop.local:3000/
+[href] - http://juice-shop.local:3000/ftp
+[href] - http://juice-shop.local:3000/ftp/quarantine
+[href] - http://juice-shop.local:3000/ftp/acquisitions.md
+[href] - http://juice-shop.local:3000/ftp/announcement_encrypted.md
+[href] - http://juice-shop.local:3000/ftp/coupons_2013.md.bak
+[href] - http://juice-shop.local:3000/ftp/eastere.gg
+[href] - http://juice-shop.local:3000/ftp/encrypt.pyc
+[href] - http://juice-shop.local:3000/ftp/incident-support.kdbx
+[href] - http://juice-shop.local:3000/ftp/legal.md
+[href] - http://juice-shop.local:3000/ftp/package-lock.json.bak
+[href] - http://juice-shop.local:3000/ftp/package.json.bak
+[href] - http://juice-shop.local:3000/ftp/suspicious_errors.yml
+```
