@@ -1,5 +1,3 @@
-# <h1 align="center">Bug-Bounty-Recon-Script</h1>
-
 ## Description
 This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting. The script is intended to be used within a Docker image, but it not required.<br>
 
@@ -46,7 +44,7 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 
     <p align="center"><img src="images/1.png" width="700"></p>
 
-3. `sudo docker-compose up --build -d`<
+3. `sudo docker-compose up --build -d`
 
 4. Open seperate terminal for ease:
 
@@ -80,3 +78,6 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 4. `python recon.py -h`
 
      <p align="center"><img src="images/7.png" width="800"></p>
+
+## Usage Examples
+`python recon.py --test`
