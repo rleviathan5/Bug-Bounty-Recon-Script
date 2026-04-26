@@ -83,6 +83,7 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 `python recon.py --test`
 
 Ouput:
+
     # Nmap 7.93 scan initiated Sun Apr 26 16:22:09 2026 as: nmap -sV -sS -oN output/nmap.txt juice-shop.local
     Nmap scan report for juice-shop.local (172.18.0.3)
     Host is up (0.000014s latency).
