@@ -83,7 +83,8 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 `python recon.py --test --port 3000`
 
 Ouput:
-<div style="height:300px; overflow-y:auto; overflow-x:hidden; padding:10px; border-radius:6px;">
+<div style="height:300px; overflow-y:auto; overflow-x:hidden; background:#0d1117; padding:10px; border-radius:6px;">
+<pre style="white-space: pre-wrap;">
 <pre><code>
 # Nmap 7.93 scan initiated Sun Apr 26 16:22:09 2026 as: nmap -sV -sS -oN output/nmap.txt juice-shop.local
 Nmap scan report for juice-shop.local (172.18.0.3)
@@ -126,6 +127,6 @@ SF:ction:\x20close\r\n\r\n");
 MAC Address: 6A:28:E2:4A:62:69 (Unknown)
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-# Nmap done at Sun Apr 26 16:22:21 2026 -- 1 IP address (1 host up) scanned in 11.97 seconds
+#Nmap done at Sun Apr 26 16:22:21 2026 -- 1 IP address (1 host up) scanned in 11.97 seconds
 </code></pre>
 </div>
