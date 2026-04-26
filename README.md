@@ -2,6 +2,17 @@
 This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting. The script is intended to be used within a Docker image, but it is not required.<br>
 
 https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster
+
+---
+
+### Disclaimer
+This script should be used purely ethically, and should not be pointed at **targets you do not have explicit permission to scan**.<br>
+
+While the default settings are designed to be as non-intrusive as possible, thouroughly consult the scope of any Bug Bounty Program to ensure you are not breaking rules of engagment by using this script.
+
+The development of this script was possible by only conducting against a locally hosted OWASP juice-shop website, and the legally authorised machine provided by the Nmap Security Scanner Project.
+
+[Legally authorised machine for scanning](scanme.nmap.org)
     
 ### Script Flags
     FLAGS:
