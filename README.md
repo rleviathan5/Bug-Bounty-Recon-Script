@@ -80,7 +80,7 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
      <p align="center"><img src="images/7.png" width="800"></p>
 
 ## Usage Examples
-`python recon.py --test --port 3000`
+`python recon.py --test --port 3000` (Only for sampling output against an authorised target - must be using docker-compose up which hosts juice-shop on port 3000)
 
 Nmap Ouput:
 ```text
@@ -209,3 +209,12 @@ http://juice-shop.local:3000/ftp
 [href] - http://juice-shop.local:3000/ftp/package.json.bak
 [href] - http://juice-shop.local:3000/ftp/suspicious_errors.yml
 ```
+
+---
+
+`python recon.py --domain {target}`
+
+This command will run:
+    `nmap -sV -sS -oN output/nmap.txt {target domain}`
+    `gospider -s {target domain} -d 1 -c 2 -t 2 -q --output output/gospider-output`
+    `gobuster gobuster dir -u {target domain} -w input/common.txt -t 1 -o output/gobuster.txt`
