@@ -1,5 +1,5 @@
 ## Description
-This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting. The script is intended to be used within a Docker image, but it is not required.<br>
+This script uses nmap, gospider and gobuster to perform non-intrusive reconnaissance on a target domain, intended for Bug Bounty Hunting. The script is intended to be used within a Docker image, but it is not required.<br>
 
 https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster
 
@@ -8,11 +8,11 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 ### Disclaimer
 This script should be used purely ethically, and should not be pointed at **targets you do not have explicit permission to scan**.<br>
 
-While the default settings are designed to be as non-intrusive as possible, thouroughly consult the scope of any Bug Bounty Program to ensure you are not breaking rules of engagment by using this script.
+While the default settings are designed to be as non-intrusive as possible, thoroughly consult the scope of any Bug Bounty Program to ensure you are not breaking rules of engagement by using this script.
 
 The development of this script was possible by only conducting against a locally hosted OWASP juice-shop website, and the legally authorised machine provided by the Nmap Security Scanner Project.
 
-[Legally authorised machine for scanning](scanme.nmap.org)
+[Legally authorised machine for scanning](http://scanme.nmap.org/)
     
 ### Script Flags
     FLAGS:
@@ -21,13 +21,13 @@ The development of this script was possible by only conducting against a locally
         --test: Test recon tools against local OWASP Juice Shop (requires docker-compose up)
         --domain {target}: Specify a target for all recon tools
         --port {target port}: Specify a specific port for all recon tools 
-        --custom: Reads commands from 'input/commands.txt' and executes them in parallel
+        --custom: Reads commands from 'input/commands.txt'
         --shodan {target}: Query Shodan api against a target 
 
     RECON TOOL DEFAULT FLAGS:
         nmap -sV -sS -oN output/nmap.txt {target domain}
         gospider -s {target domain} -d 1 -c 2 -t 2 -q --output output/gospider-output
-        gobuster gobuster dir -u {target domain} -w input/common.txt -t 1 -o output/gobuster.txt
+        gobuster dir -u {target domain} -w input/common.txt -t 1 -o output/gobuster.txt
 
 ## Getting Started
 **Check if Docker is installed on your system (LINUX ONLY, USE DOCKER DESKTOP IF ON WINDOWS)**<br>
@@ -47,7 +47,7 @@ The development of this script was possible by only conducting against a locally
 `sudo docker run hello-world`
 
 ## Setting up Docker Images
-**If you want to bundle OWASP juice-shop together with the script for testing, run the bellow commands:**<br>
+**If you want to bundle OWASP juice-shop together with the script for testing, run the below commands:**<br>
 
 1. `git clone https://github.com/rleviathan5/Bug-Bounty-Recon-Script.git`
 
@@ -57,7 +57,7 @@ The development of this script was possible by only conducting against a locally
 
 3. `sudo docker-compose up --build -d`
 
-4. Open seperate terminal for ease:
+4. Open separate terminal for ease:
 
     <p align="center"><img src="images/2.png" width="1000"></p>
 
@@ -94,7 +94,7 @@ The development of this script was possible by only conducting against a locally
 `python recon.py --test --port 3000`<br> 
 Only for sampling output against an authorised target - must be using docker-compose up which hosts juice-shop on port 3000
 
-Nmap Ouput:
+Nmap Output:
 ```text
 # Nmap 7.93 scan initiated Sun Apr 26 16:22:09 2026 as: nmap -sV -sS -oN output/nmap.txt juice-shop.local
 Nmap scan report for juice-shop.local (172.18.0.3)
@@ -231,7 +231,7 @@ http://juice-shop.local:3000/ftp
 This command will run:<br>
     `nmap -sV -sS -oN output/nmap.txt {target domain}`<br>
     `gospider -s {target domain} -d 1 -c 2 -t 2 -q --output output/gospider-output`<br>
-    `gobuster gobuster dir -u {target domain} -w input/common.txt -t 1 -o output/gobuster.txt`<br>
+    `gobuster dir -u {target domain} -w input/common.txt -t 1 -o output/gobuster.txt`<br>
 
 ---
 
