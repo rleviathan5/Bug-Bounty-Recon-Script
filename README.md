@@ -1,12 +1,15 @@
 # Bug-Bounty-Recon-Script
-temporary readme layout, will prettify later<br>
 
-This simple Bug Bounty Hunting script uses nmap, gospider and gobuster<br>
+## Description
+This script uses nmap, gospider and gobuster to perform non-intrusive recon on a target domain, intended for Bug Bounty Hunting.<br>
+
+
+
     https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https://github.com/Oj/gobuster<br>
     FLAGS:<br>
     --help: Display help menu for recon.py script<br>
     --tools: Display help menus for packaged recon tools<br>
-    --test: Test recon tools against local OWASP Juice Shop (see README)<br>
+    --test: Test recon tools against local OWASP Juice Shop (requires docker-compose up)<br>
     --domain {Valid Domain}: Specify a target for all recon tools<br>
     RECON TOOL DEFAULT FLAGS<br>
     nmap -sV -sS -oN nmap.txt {target domain}<br>
