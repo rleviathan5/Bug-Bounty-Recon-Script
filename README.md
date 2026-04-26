@@ -52,7 +52,8 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 1. `git clone https://github.com/rleviathan5/Bug-Bounty-Recon-Script.git`
 
 2.  open a terminal in cloned repo:
-    ![Screenshot](images/1.png)
+
+    <p align="center"><img src="images/1.png" width="600"></p>
 
 3. `sudo docker-compose up --build -d`<br>
 4. `open seperate terminal for ease`
