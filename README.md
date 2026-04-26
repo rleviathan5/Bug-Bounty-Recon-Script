@@ -53,7 +53,7 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 
 2.  Open a terminal in cloned repo:
 
-    <p align="center"><img src="images/1.png" width="400"></p>
+    <p align="center"><img src="images/1.png" width="800"></p>
 
 3. `sudo docker-compose up --build -d`<br>
 
@@ -65,8 +65,8 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 
 6. At this point, if you 'ls' you'll see the repo files:
 
-    <p align="center"><img src="images/3.png" width="400"></p>
+    <p align="center"><img src="images/3.png" width="800"></p>
 
 7. `python recon.py -h`
 
-    <p align="center"><img src="images/4.png" width="400"></p>
+    <p align="center"><img src="images/4.png" width="800"></p>
