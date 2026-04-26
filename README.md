@@ -62,6 +62,8 @@ https://nmap.org/docs.html | https://github.com/jaeles-project/gospider | https:
 
     <p align="center"><img src="images/4.png" width="800"></p>
 
+---
+
 **If you want to just run the script without OWASP juice-shop, run the below commands:**
 1. Open a terminal in cloned repo:
 
