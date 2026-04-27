@@ -66,21 +66,21 @@ def test_flag(port):
         gobuster_cmd = re.sub(r'(-[su]\s+)(\S+)', rf'\1\2:{port}', gobuster_cmd)
     
     with ThreadPoolExecutor(max_workers=3) as executor:
-            threads = [
-                executor.submit(lambda: subprocess.run(shlex.split(nmap_cmd), capture_output=True, text=True, check=True)),
-                executor.submit(lambda: subprocess.run(shlex.split(gospider_cmd), capture_output=True, text=True, check=True)),
-                executor.submit(lambda: subprocess.run(shlex.split(gobuster_cmd), capture_output=True, text=True, check=True))
-            ]
+        threads = [
+            executor.submit(lambda: subprocess.run(shlex.split(nmap_cmd), capture_output=True, text=True, check=True)),
+            executor.submit(lambda: subprocess.run(shlex.split(gospider_cmd), capture_output=True, text=True, check=True)),
+            executor.submit(lambda: subprocess.run(shlex.split(gobuster_cmd), capture_output=True, text=True, check=True))
+        ]
 
-            print("Crawling...")
+        print("Crawling...")
 
-            for thread in as_completed(threads): #throw errors as soon as they occur
-                try:
-                    thread.result() #block until all threads are done
-                except Exception as e:
-                    print(e)
+        for thread in as_completed(threads): #throw errors as soon as they occur
+            try:
+                thread.result() #block until all threads are done
+            except Exception as e:
+                print(e)
 
-            print("Done")
+        print("Done")
 
 def domain_flag(input_domain, port):
     nmap_cmd = 'nmap -sV -sS -T3 -oN output/nmap.txt ' + input_domain
