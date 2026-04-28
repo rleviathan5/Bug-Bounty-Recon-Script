@@ -24,10 +24,10 @@ def preprocess_custom_flag(commands):
     #valid commands will function as normal
     result = []
     for cmd in commands:
-        if not re.search(r'\bnmap\s+', cmd):
-            cmd = re.sub(r'(-[su]\s+)(?!https?://)(\S+)', r'\1http://\2', cmd)
+        if re.search(r'\bnmap\s+', cmd): #if nmap command
+            cmd = re.sub(r'\bhttps?://', '', cmd) #remove http(s):// from string
 
-        cmd = re.sub(r'\b(?:nmap|gospider|gobuster)\s+', '', cmd).strip()
+        cmd = re.sub(r'\b(?:nmap|gospider|gobuster)\s+', '', cmd).strip() #find instance of nmap/gospider/gobuster and remove
         result.append(cmd)
     return result
     
@@ -87,7 +87,7 @@ def domain_flag(input_domain, port):
     gospider_cmd = 'gospider -s ' + input_domain + ' -d 1 -c 2 -t 2 -q --output output/gospider-output'
     gobuster_cmd = 'gobuster dir -u ' + input_domain + ' -w input/common.txt -t 1 -o output/gobuster.txt'
 
-    nmap_cmd = re.sub(r'https?://', '', nmap_cmd) #removing http(s):// from nmap command, gospider and gobuster need the http(s)
+    nmap_cmd = re.sub(r'\bhttps?://', '', nmap_cmd) #removing http(s):// from nmap command, gospider and gobuster need the http(s)
 
     if port is not None:
         nmap_cmd + '-p ' + str(port) #append '-p {port}' to nmap command
