@@ -139,7 +139,7 @@ def shodan_flag(input_domain):
         api = Shodan(key)
     
     try:
-        target_ip = socket.gethostbyname(input_domain) #free shodan api doesnt allow domain lookups, so need to resolve domain to an ip before parsing to shodan
+        target_ip = socket.gethostbyname(input_domain)    #free shodan api doesnt allow domain lookups, so need to resolve domain to an ip before parsing to shodan
         target_info = api.host(target_ip)
     except Exception as e:
         print(e)

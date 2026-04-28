@@ -14,7 +14,6 @@ RUN pip install shodan
 #move gospider to same dir as namp and gobuster
 COPY --from=builder /usr/local/bin/gospider /usr/bin/gospider
 WORKDIR /app
-COPY recon.py .
-COPY input/common.txt .
+
 
 

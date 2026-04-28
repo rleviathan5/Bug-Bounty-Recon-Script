@@ -50,3 +50,29 @@ http://juice-shop.local:3000/ftp
 [href] - http://juice-shop.local:3000/ftp/package-lock.json.bak
 [href] - http://juice-shop.local:3000/ftp/package.json.bak
 [href] - http://juice-shop.local:3000/ftp/suspicious_errors.yml
+http://juice-shop.local:3000/ftp
+http://juice-shop.local:3000
+http://juice-shop.local:3000/ftp
+[href] - http://juice-shop.local:3000/
+[href] - http://juice-shop.local:3000/ftp
+[href] - http://juice-shop.local:3000/ftp/quarantine
+[href] - http://juice-shop.local:3000/ftp/acquisitions.md
+[href] - http://juice-shop.local:3000/ftp/announcement_encrypted.md
+[href] - http://juice-shop.local:3000/ftp/coupons_2013.md.bak
+[href] - http://juice-shop.local:3000/ftp/eastere.gg
+[href] - http://juice-shop.local:3000/ftp/encrypt.pyc
+[href] - http://juice-shop.local:3000/ftp/incident-support.kdbx
+[href] - http://juice-shop.local:3000/ftp/legal.md
+[href] - http://juice-shop.local:3000/ftp/package-lock.json.bak
+[href] - http://juice-shop.local:3000/ftp/package.json.bak
+[href] - http://juice-shop.local:3000/ftp/suspicious_errors.yml
+[href] - http://juice-shop.local:3000/assets/public/favicon_js.ico
+[href] - http://juice-shop.local:3000/styles.css
+[href] - http://juice-shop.local:3000/chunk-24EZLZ4I.js
+[href] - http://juice-shop.local:3000/chunk-T3PSKZ45.js
+[href] - http://juice-shop.local:3000/chunk-4MIYPPGW.js
+[href] - http://juice-shop.local:3000/chunk-LHKS7QUN.js
+[href] - http://juice-shop.local:3000/chunk-TWZW5B45.js
+[javascript] - http://juice-shop.local:3000/polyfills.js
+[javascript] - http://juice-shop.local:3000/scripts.js
+[javascript] - http://juice-shop.local:3000/main.js
